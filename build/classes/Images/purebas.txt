@@ -1,0 +1,3 @@
+(Turno 5) El planeta J ha realizado un ataque de 50 naves al planeta n, el ataque llegará en el turno 10
+(Turno 10) El planeta N se ha defendido del ataque del planeta J, retornan x naves al planeta J
+(Turno 10) El planeta N ha caido ante el planeta J, ahora x es el conquistador el planeta N

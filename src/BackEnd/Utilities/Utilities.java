@@ -6,7 +6,10 @@
 package BackEnd.Utilities;
 
 import BackEnd.Objects.Planet;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 /**
  *
@@ -51,6 +54,14 @@ public class Utilities {
             }
         }
         return planet;
+    }
+    
+    public static void addBorder(JLabel label, Border b ) {
+        String str = b.getClass().toString();
+        str = str.substring( str.lastIndexOf('.') + 1 );
+        label.setLayout( new BorderLayout() );
+        label.add(new JLabel( str,JLabel.CENTER ),BorderLayout.CENTER );
+        label.setBorder( b );
     }
     
 //        int filas = Integer.parseInt(JOptionPane.showInputDialog(null, "filas"));

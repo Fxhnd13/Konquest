@@ -7,8 +7,12 @@ package UI;
 
 import BackEnd.Objects.Planet;
 import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
 import javax.accessibility.AccessibleContext;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ComponentUI;
 
@@ -19,9 +23,38 @@ import javax.swing.plaf.ComponentUI;
 public class Cell extends JLabel {
     
     private Planet planet = null; 
-    private String imagePath;
+    private String imagePath, datos;
     private int posicionX, posicionY;
+    JDialog info = new JDialog();
+    JLabel nombre = new JLabel("Nombre: ");
+    JLabel produccion = new JLabel("Produccion: ");
+    JLabel naves = new JLabel("Naves: ");
+    JLabel porcentaje = new JLabel("Porcentaje de muerte: ");
+    JLabel conquistador = new JLabel("Conquistador: ");
 
+    public Cell(int x, int y){
+        posicionX = x;
+        posicionY = y;
+        info.setLayout(new GridLayout(5, 1));
+        info.add(nombre);
+        info.add(produccion);
+        info.add(naves);
+        info.add(porcentaje);
+        info.add(conquistador);
+        info.setSize(300, 120);
+        info.setFocusable(false);
+        info.setResizable(false);
+    }
+    
+    public void showInfo(MouseEvent e){
+        info.setVisible(true);
+        info.setLocation(e.getXOnScreen(), e.getYOnScreen());
+    }
+    
+    public void hideInfo(MouseEvent e){
+        info.setVisible(false);
+    }
+    
     public String getImagePath(){
         return imagePath;
     }

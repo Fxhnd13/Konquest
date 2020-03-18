@@ -11,10 +11,17 @@ import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
 import BackEnd.Utilities.Utilities;
+import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,31 +30,42 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GameManager {
     
-    private GameConfiguration configuration; 
+    private GameConfiguration configuration = new GameConfiguration(); 
     
-    public JPanel doMap(Map map){
-        JPanel SpacePanel = new JPanel(new GridLayout(map.getFilas(), map.getColumnas()));//hacemos las columans y las filas
+    public void doMap(Map map, JPanel SpacePanel){
         int iTemp = 1;
         for (int i = 0; i < map.getFilas(); i++) {//por cada fila
             for (int j = 0; j < map.getColumnas(); j++) { //por cada columna
-                Cell cell = new Cell();//agregamos una nueva celda
-                cell.setPosicionX(i);//configuramos la posicion en x
-                cell.setPosicionY(j);//configuramos la posicion en y
-                cell.setPlanet(Utilities.planetAt(i,j, configuration.getPlanets()));//asignamos el planeta a la celda (de ser nulo no se dibuja planeta)
+                Cell cell = new Cell(i,j);//agregamos una nueva celda
+                cell.setSize(SpacePanel.getWidth()/map.getFilas(), SpacePanel.getHeight()/map.getColumnas());
+                cell.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseEntered(java.awt.event.MouseEvent evt) {
+                                    cell.showInfo(evt);
+                                }
+                                public void mouseExited(java.awt.event.MouseEvent evt){
+                                    cell.hideInfo(evt);
+                                }
+                });
+                ImageIcon imagen;
+                //cell.setPlanet(Utilities.planetAt(i,j, configuration.getPlanets()));//asignamos el planeta a la celda (de ser nulo no se dibuja planeta)
                 if(cell.getPlanet()==null){
-                    cell.setIcon(new ImageIcon(getClass().getResource("/Images/0.png")));
+                    imagen = new ImageIcon(getClass().getResource("/Images/0.png"));
+                    Utilities.addBorder(cell, new LineBorder(Color.BLACK));
                 }else{
                     if(iTemp==3||iTemp==5||iTemp==7||iTemp==8){
-                        cell.setIcon(new ImageIcon(getClass().getResource("/Images/"+iTemp+".jpg")));
+                        imagen = new ImageIcon(getClass().getResource("/Images/"+iTemp+".jpg"));
                     }else{
-                        cell.setIcon(new ImageIcon(getClass().getResource("Images/"+iTemp+".png")));
+                        imagen = new ImageIcon(getClass().getResource("Images/"+iTemp+".png"));
                     }
+                    //hay que hacer condicional para el color del jugador a quien pertenece el planeta
                 }
+                Icon fondo = new ImageIcon(imagen.getImage().getScaledInstance(cell.getWidth(), cell.getHeight(), Image.SCALE_DEFAULT));
+                cell.setIcon(fondo);
+                SpacePanel.add(cell);
                 iTemp = (iTemp==10)?1:(iTemp+1); 
             }
         }
         this.configuration.setMap(map);
-        return SpacePanel;
     }
     
     public void doPlayers(JTable tablePlayers){
