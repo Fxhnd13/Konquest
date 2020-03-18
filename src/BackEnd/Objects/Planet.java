@@ -17,9 +17,25 @@ import javax.swing.plaf.ComponentUI;
  */
 public class Planet{
     
-    private int naves, production; //alto y ancho respectivamente
+    private int naves, production, positionX, positionY; //alto y ancho respectivamente
     private String colorPlayer, name, conqueror;
     private double deathPercentage;
+
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
     
     public String getConqueror(){
         return conqueror;
