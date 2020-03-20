@@ -26,16 +26,17 @@ public class Cell extends JLabel {
     private String imagePath, datos;
     private int posicionX, posicionY;
     JDialog info = new JDialog();
-    JLabel nombre = new JLabel("Nombre: ");
-    JLabel produccion = new JLabel("Produccion: ");
-    JLabel naves = new JLabel("Naves: ");
-    JLabel porcentaje = new JLabel("Porcentaje de muerte: ");
-    JLabel conquistador = new JLabel("Conquistador: ");
+    JLabel nombre = new JLabel("  Nombre: ");
+    JLabel produccion = new JLabel("  Produccion: ");
+    JLabel naves = new JLabel("  Naves: ");
+    JLabel porcentaje = new JLabel("  Porcentaje de muerte: ");
+    JLabel conquistador = new JLabel("  Conquistador: ");
 
     public Cell(int x, int y){
         posicionX = x;
         posicionY = y;
         info.setLayout(new GridLayout(5, 1));
+        info.setTitle("Informacion de la celda");
         info.add(nombre);
         info.add(produccion);
         info.add(naves);
@@ -48,7 +49,7 @@ public class Cell extends JLabel {
     
     public void showInfo(MouseEvent e){
         info.setVisible(true);
-        info.setLocation(e.getXOnScreen(), e.getYOnScreen());
+        info.setLocation(570, 380);
     }
     
     public void hideInfo(MouseEvent e){

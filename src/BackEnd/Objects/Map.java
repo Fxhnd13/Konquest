@@ -6,6 +6,8 @@
 package BackEnd.Objects;
 
 import BackEnd.Configuration.ConfigurationNeutrales;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,11 +15,36 @@ import BackEnd.Configuration.ConfigurationNeutrales;
  */
 public class Map {
     
-    private String id; 
-    private int filas, columnas, planetasNeutrales;
+    private String id = ""; 
+    private int filas=-1, columnas=-1, planetasNeutrales=-1, finalization=-1;
     private boolean alAzar = false, mapaCiego = false, acumular = false;
     private ConfigurationNeutrales neutrales = new ConfigurationNeutrales();
             
+    public Map(String id, String row, String columns, JCheckBox blindMap, JCheckBox acum, String finalization, JCheckBox showShips, JCheckBox stadistics, String amount){
+        if(id.isEmpty()||row.isEmpty()||columns.isEmpty()||amount.isEmpty()||finalization.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos necesarios.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            this.id = id;
+            this.filas = Integer.parseInt(row);
+            this.columnas = Integer.parseInt(columns);
+            this.mapaCiego = blindMap.isSelected();
+            this.acumular = acum.isSelected();
+            alAzar = true;
+            this.planetasNeutrales = Integer.parseInt(amount);
+            if(!finalization.isEmpty())this.finalization = Integer.parseInt(finalization);
+            this.neutrales.setShowShips(showShips.isSelected());
+            this.neutrales.setShowStadistics(stadistics.isSelected());
+        }
+    }
+    
+    public boolean isValid(){
+        boolean valor = true;
+        if(id.isEmpty()||filas==-1||columnas==-1||planetasNeutrales==-1){
+            valor = false;
+        }
+        return valor;
+    }
+    
     public Map(){}
 
     public String getId() {

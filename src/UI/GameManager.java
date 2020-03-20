@@ -32,41 +32,7 @@ public class GameManager {
     
     private GameConfiguration configuration = new GameConfiguration(); 
     
-    public void doMap(Map map, JPanel SpacePanel){
-        int iTemp = 1;
-        for (int i = 0; i < map.getFilas(); i++) {//por cada fila
-            for (int j = 0; j < map.getColumnas(); j++) { //por cada columna
-                Cell cell = new Cell(i,j);//agregamos una nueva celda
-                cell.setSize(SpacePanel.getWidth()/map.getFilas(), SpacePanel.getHeight()/map.getColumnas());
-                cell.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseEntered(java.awt.event.MouseEvent evt) {
-                                    cell.showInfo(evt);
-                                }
-                                public void mouseExited(java.awt.event.MouseEvent evt){
-                                    cell.hideInfo(evt);
-                                }
-                });
-                ImageIcon imagen;
-                //cell.setPlanet(Utilities.planetAt(i,j, configuration.getPlanets()));//asignamos el planeta a la celda (de ser nulo no se dibuja planeta)
-                if(cell.getPlanet()==null){
-                    imagen = new ImageIcon(getClass().getResource("/Images/0.png"));
-                    Utilities.addBorder(cell, new LineBorder(Color.BLACK));
-                }else{
-                    if(iTemp==3||iTemp==5||iTemp==7||iTemp==8){
-                        imagen = new ImageIcon(getClass().getResource("/Images/"+iTemp+".jpg"));
-                    }else{
-                        imagen = new ImageIcon(getClass().getResource("Images/"+iTemp+".png"));
-                    }
-                    //hay que hacer condicional para el color del jugador a quien pertenece el planeta
-                }
-                Icon fondo = new ImageIcon(imagen.getImage().getScaledInstance(cell.getWidth(), cell.getHeight(), Image.SCALE_DEFAULT));
-                cell.setIcon(fondo);
-                SpacePanel.add(cell);
-                iTemp = (iTemp==10)?1:(iTemp+1); 
-            }
-        }
-        this.configuration.setMap(map);
-    }
+    
     
     public void doPlayers(JTable tablePlayers){
         DefaultTableModel modelTablePlayers = (DefaultTableModel) tablePlayers.getModel();//obtenemos los jugadores que se desea tener
