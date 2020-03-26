@@ -18,32 +18,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utilities {
     
-    public static int calcularDistancia(Cell salida, Cell destino){
-        int valor = 0;
-            int distanciaEnX = salida.getPosicionX()-destino.getPosicionY();
-            int distanciaEnY = salida.getPosicionY()-destino.getPosicionY();
-            if(distanciaEnX<0)distanciaEnX*=-1;
-            if(distanciaEnY<0)distanciaEnY*=-1;
-            valor = (int) Math.sqrt((distanciaEnX*distanciaEnX)+(distanciaEnY*distanciaEnY));
-        return valor;
-    }
-    
-    public static int calcularDistancia(Planet destino, Planet salida) {
-        int valor = 0;
-            int distanciaEnX = salida.getPositionX()-destino.getPositionX();
-            int distanciaEnY = salida.getPositionY()-destino.getPositionY();
-            valor = (int) Math.sqrt((distanciaEnX*distanciaEnX)+(distanciaEnY*distanciaEnY));
-        return valor;
-    }
-    
-    public static boolean verifyIfPlanetIsConquest(String name, ArrayList<Planet> planets){
-        boolean valor = false;
-        for (Planet planet : planets) {
-            if(planet.getName().equals(name)) valor = true;
-        }
-        return valor;
-    }
-    
     public static int[] numerosAleatoriosEntre(int cantidad, int b){
         int[] numeros = new int[cantidad];
         for (int i = 0; i < cantidad; i++) {
@@ -127,14 +101,6 @@ public class Utilities {
         return valor;
     }
     
-    public static boolean existe(String palabra, String nombres[]){
-        boolean valor = false;
-        for (int i = 0; i < nombres.length; i++) {
-            if(palabra.equals(nombres[i]))valor=true;
-        }
-        return valor;
-    }
-    
     public static Planet getPlanetaPorNombre(String nombre, ArrayList<Planet> planets){
         Planet valor = null;
         for (Planet planet : planets) {
@@ -147,16 +113,6 @@ public class Utilities {
         Planet planet = null;
         for (Planet temp : planets) {
             if(temp.getPositionX()==cell.getPosicionX()&&temp.getPositionY()==cell.getPosicionY()){
-                planet = temp;
-            }
-        }
-        return planet;
-    }
-    
-    public static Planet planetAt(int x, int y, ArrayList<Planet> planets){
-        Planet planet = null;
-        for (Planet temp : planets) {
-            if(temp.getPositionX()==x&&temp.getPositionY()==y){
                 planet = temp;
             }
         }

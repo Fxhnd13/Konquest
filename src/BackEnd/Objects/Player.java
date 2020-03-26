@@ -15,11 +15,52 @@ import java.util.ArrayList;
 public class Player {
     
     private String name, color, type;
+    private int navesCreadas, navesDestruidas, planetasConquistados, ataquesRealizados;
     
     public Player(String name, String color, String type){
         this.name = name;
         this.color = color;
         this.type = type;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getNavesCreadas() {
+        return navesCreadas;
+    }
+
+    public void setNavesCreadas(int navesCreadas) {
+        this.navesCreadas = navesCreadas;
+    }
+
+    public int getNavesDestruidas() {
+        return navesDestruidas;
+    }
+
+    public void setNavesDestruidas(int navesDestruidas) {
+        this.navesDestruidas = navesDestruidas;
+    }
+
+    public int getPlanetasConquistados() {
+        return planetasConquistados;
+    }
+
+    public void setPlanetasConquistados(int planetasConquistados) {
+        this.planetasConquistados = planetasConquistados;
+    }
+
+    public int getAtaquesRealizados() {
+        return ataquesRealizados;
+    }
+
+    public void setAtaquesRealizados(int ataquesRealizados) {
+        this.ataquesRealizados = ataquesRealizados;
     }
     
     public String getName() {

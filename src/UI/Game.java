@@ -121,11 +121,16 @@ public class Game extends javax.swing.JFrame {
         GameConfigurationAFinalization = new javax.swing.JFormattedTextField();
         jLabel28 = new javax.swing.JLabel();
         PlayAButton = new javax.swing.JButton();
+        GameResults = new javax.swing.JDialog();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        GameResultTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         InformationPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         NamePlayerInTurn = new javax.swing.JLabel();
         AtackButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        EndTurnButton = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         StateLabel = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -822,6 +827,57 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        GameResults.setSize(new java.awt.Dimension(800, 300));
+
+        GameResultTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Jugador", "Planetas Conquistados", "Naves Creadas", "Naves Eliminadas", "Ataques Realizados"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(GameResultTable);
+
+        jButton1.setText("Terminar Partida");
+
+        jButton3.setText("Guardar Repeticion");
+
+        javax.swing.GroupLayout GameResultsLayout = new javax.swing.GroupLayout(GameResults.getContentPane());
+        GameResults.getContentPane().setLayout(GameResultsLayout);
+        GameResultsLayout.setHorizontalGroup(
+            GameResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(GameResultsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5)
+                .addContainerGap())
+            .addGroup(GameResultsLayout.createSequentialGroup()
+                .addContainerGap(199, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(155, 155, 155)
+                .addComponent(jButton3)
+                .addGap(181, 181, 181))
+        );
+        GameResultsLayout.setVerticalGroup(
+            GameResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(GameResultsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(GameResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         InformationPanel.setBackground(new java.awt.Color(0, 0, 0));
@@ -841,12 +897,12 @@ public class Game extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(102, 102, 102));
-        jButton2.setForeground(new java.awt.Color(204, 204, 204));
-        jButton2.setText("Terminar Turno");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        EndTurnButton.setBackground(new java.awt.Color(102, 102, 102));
+        EndTurnButton.setForeground(new java.awt.Color(204, 204, 204));
+        EndTurnButton.setText("Terminar Turno");
+        EndTurnButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                EndTurnButtonActionPerformed(evt);
             }
         });
 
@@ -881,7 +937,7 @@ public class Game extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
                         .addComponent(AtackButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(EndTurnButton)
                         .addGap(576, 576, 576))
                     .addGroup(InformationPanelLayout.createSequentialGroup()
                         .addComponent(jLabel20)
@@ -904,7 +960,7 @@ public class Game extends javax.swing.JFrame {
                             .addComponent(StateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(InformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(AtackButton)
-                        .addComponent(jButton2)))
+                        .addComponent(EndTurnButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InformationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1002,6 +1058,8 @@ public class Game extends javax.swing.JFrame {
         uiManager.cleanLabel(GameConfigurationAFinalization);
         uiManager.cleanLabel(GameConfigurationAAmount);
         uiManager.cleanTable(GameConfigurationATablePlayers);
+        this.AtackButton.setEnabled(true);
+        this.EndTurnButton.setEnabled(true);
         GameConfigurationAAcum.setSelected(false);
         GameConfigurationABlindMap.setSelected(false);
         GameConfigurationAShowShips.setSelected(false);
@@ -1014,14 +1072,12 @@ public class Game extends javax.swing.JFrame {
                               Integer.parseInt(GameConfigurationARowMap.getText().trim())*Integer.parseInt(GameConfigurationAColumnMap.getText().trim())){
             JOptionPane.showMessageDialog(null, "No puede haber más planetas que espacios en el mapa.", "Error.", JOptionPane.ERROR_MESSAGE);
         }else{
-            SpacePanel.removeAll();
-            gameManager.reset();
+            gameManager.reset(SpacePanel, Bitacora);
             TurnLabel.setText("1");
             gameManager.doPlayers(GameConfigurationATablePlayers);
             gameManager.doPlanets(Integer.parseInt(GameConfigurationAAmount.getText().trim()),
                                   Integer.parseInt(GameConfigurationARowMap.getText().trim()),
-                                  Integer.parseInt(GameConfigurationAColumnMap.getText().trim()),
-                                  gameManager.getPlayers());
+                                  Integer.parseInt(GameConfigurationAColumnMap.getText().trim()));
             Map map = new Map(GameConfigurationANameMap.getText().trim(),
                               GameConfigurationARowMap.getText().trim(),
                               GameConfigurationAColumnMap.getText().trim(),
@@ -1101,6 +1157,8 @@ public class Game extends javax.swing.JFrame {
         uiManager.cleanLabel(GameConfigurationPDeathless);
         GameConfigurationPTypePlayer.setSelectedIndex(0);
         GameConfigurationPColorPlayer.setSelectedIndex(0);
+        this.AtackButton.setEnabled(true);
+        this.EndTurnButton.setEnabled(true);
         GameConfigurationPAcum.setSelected(false);
         GameConfigurationPBlindMap.setSelected(false);
         GameConfigurationPShowShips.setSelected(false);
@@ -1145,8 +1203,7 @@ public class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_AddPlanetButtonActionPerformed
 
     private void PersonalizedPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PersonalizedPlayButtonActionPerformed
-        SpacePanel.removeAll();
-        gameManager.reset();
+        gameManager.reset(SpacePanel, Bitacora);
         TurnLabel.setText("1");
         gameManager.doPlayers(GameConfigurationPTablePlayers);
         gameManager.doPlanets(GameConfigurationPTablePlanets, Integer.parseInt(GameConfigurationPRowMap.getText().trim()), Integer.parseInt(GameConfigurationPColumnMap.getText().trim()));
@@ -1179,12 +1236,19 @@ public class Game extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AtackButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void EndTurnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTurnButtonActionPerformed
         gameManager.cambiarJugador(Bitacora, SpacePanel);
         TurnLabel.setText(String.valueOf(gameManager.getTurno()));
         NamePlayerInTurn.setText(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName());
-        NamePlayerInTurn.setBackground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
-    }//GEN-LAST:event_jButton2ActionPerformed
+        NamePlayerInTurn.setForeground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
+        StateLabel.setForeground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
+        if(gameManager.isVictoria()){
+            uiManager.doResultTable(GameResultTable, gameManager.getPlayers());
+            this.AtackButton.setEnabled(false);
+            this.EndTurnButton.setEnabled(false);
+            GameResults.setVisible(true);
+        }
+    }//GEN-LAST:event_EndTurnButtonActionPerformed
 
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
@@ -1248,7 +1312,7 @@ public class Game extends javax.swing.JFrame {
                             Utilities.planetAt(cell, gameManager.getPlanets());
                             if(Utilities.planetAt(cell, gameManager.getPlanets())!=null){
                                 if(gameManager.getExitCell()==null){
-                                    if(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName().equals(Utilities.planetAt(cell.getPosicionX(), cell.getPosicionY(), gameManager.getPlanets()).getConqueror())){
+                                    if(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName().equals(Utilities.planetAt(cell, gameManager.getPlanets()).getConqueror())){
                                         gameManager.setExitCell(cell);
                                         StateLabel.setText("Atacando: Seleccionando un planeta destino.");
                                     }
@@ -1307,6 +1371,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JTextArea Bitacora;
     private javax.swing.JMenuItem BotonJuegoAlAzar;
     private javax.swing.JMenuItem BotonJuegoPersonalizado;
+    private javax.swing.JButton EndTurnButton;
     private javax.swing.JDialog GameConfigurationA;
     private javax.swing.JCheckBox GameConfigurationAAcum;
     private javax.swing.JFormattedTextField GameConfigurationAAmount;
@@ -1340,6 +1405,8 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JTable GameConfigurationPTablePlanets;
     private javax.swing.JTable GameConfigurationPTablePlayers;
     private javax.swing.JComboBox<String> GameConfigurationPTypePlayer;
+    private javax.swing.JTable GameResultTable;
+    private javax.swing.JDialog GameResults;
     private javax.swing.JPanel InformationPanel;
     private javax.swing.JLabel NamePlayerInTurn;
     private javax.swing.JButton PersonalizedPlayButton;
@@ -1347,7 +1414,8 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JPanel SpacePanel;
     private javax.swing.JLabel StateLabel;
     private javax.swing.JLabel TurnLabel;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -1391,5 +1459,6 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 }

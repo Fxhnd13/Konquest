@@ -29,7 +29,7 @@ public class Map {
             this.columnas = Integer.parseInt(columns);
             this.mapaCiego = blindMap.isSelected();
             this.acumular = acum.isSelected();
-            if(!finalization.isEmpty())this.finalization = Integer.parseInt(finalization);
+            if((!finalization.isEmpty()))this.finalization = Integer.parseInt(finalization);
             this.neutrales.setShowShips(showShips.isSelected());
             this.neutrales.setShowStadistics(stadistics.isSelected());
             this.neutrales.setProduction(columnas);
@@ -45,7 +45,7 @@ public class Map {
             this.columnas = Integer.parseInt(columns);
             this.mapaCiego = blindMap.isSelected();
             this.acumular = acum.isSelected();
-            if(!finalization.isEmpty())this.finalization = Integer.parseInt(finalization);
+            if((!finalization.isEmpty()))this.finalization = Integer.parseInt(finalization);
             this.neutrales.setShowShips(showShips.isSelected());
             this.neutrales.setShowStadistics(stadistics.isSelected());
             this.neutrales.setProduction(columnas);

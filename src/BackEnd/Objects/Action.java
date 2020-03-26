@@ -13,11 +13,22 @@ public class Action {
     
     private int turn, type;
     private Atack atack = null;
+    private String playerName;
 
-    public Action(int turn, int type, Atack atack){
+    public Action(int turn, int type, Atack atack, String playerName){
         this.type = type;
         this.turn = turn;
         this.atack = atack;
+        this.playerName = playerName;
+        if(type!=0){
+            System.out.println("Se realizó un ataque\nSalida: "+atack.getNameExitPlanet()
+                    +"\nDestino: "+atack.getNameDestinyPlanet()
+                    +"\nNaves: "+atack.getShips()
+                    +"\nTurno Salida: "+atack.getExitTurn()
+                    +"\nTurno Llegada: "+atack.getTargetTurn());
+        }else{
+            System.out.println("EL jugador "+this.playerName+" termino su turno.");
+        }
     }
     
     public int getTurn() {

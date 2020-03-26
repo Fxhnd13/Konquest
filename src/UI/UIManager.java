@@ -5,7 +5,9 @@
  */
 package UI;
 
+import BackEnd.Objects.Player;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -17,6 +19,10 @@ import javax.swing.table.DefaultTableModel;
  * @author jose_
  */
 public class UIManager {
+    
+    public void doResultTable(JTable table, ArrayList<Player> players){
+        
+    }
     
     public void cleanTable(JTable table){
         DefaultTableModel model = (DefaultTableModel) table.getModel();
