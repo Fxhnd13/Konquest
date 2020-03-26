@@ -17,11 +17,11 @@ public class Map {
     
     private String id = ""; 
     private int filas=-1, columnas=-1, planetasNeutrales=-1, finalization=-1;
-    private boolean alAzar = false, mapaCiego = false, acumular = false;
+    private boolean mapaCiego = false, acumular = false;
     private ConfigurationNeutrales neutrales = new ConfigurationNeutrales();
             
     public Map(String id, String row, String columns, JCheckBox blindMap, JCheckBox acum, String finalization, JCheckBox showShips, JCheckBox stadistics, String amount){
-        if(id.isEmpty()||row.isEmpty()||columns.isEmpty()||amount.isEmpty()||finalization.isEmpty()){
+        if(id.isEmpty()||row.isEmpty()||columns.isEmpty()||amount.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe llenar todos los campos necesarios.", "Error", JOptionPane.ERROR_MESSAGE);
         }else{
             this.id = id;
@@ -29,23 +29,46 @@ public class Map {
             this.columnas = Integer.parseInt(columns);
             this.mapaCiego = blindMap.isSelected();
             this.acumular = acum.isSelected();
-            alAzar = true;
-            this.planetasNeutrales = Integer.parseInt(amount);
             if(!finalization.isEmpty())this.finalization = Integer.parseInt(finalization);
             this.neutrales.setShowShips(showShips.isSelected());
             this.neutrales.setShowStadistics(stadistics.isSelected());
+            this.neutrales.setProduction(columnas);
+        }
+    }
+    
+    public Map(String id, String row, String columns, JCheckBox blindMap, JCheckBox acum, String finalization, JCheckBox showShips, JCheckBox stadistics){
+        if(id.isEmpty()||row.isEmpty()||columns.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos necesarios.", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            this.id = id;
+            this.filas = Integer.parseInt(row);
+            this.columnas = Integer.parseInt(columns);
+            this.mapaCiego = blindMap.isSelected();
+            this.acumular = acum.isSelected();
+            if(!finalization.isEmpty())this.finalization = Integer.parseInt(finalization);
+            this.neutrales.setShowShips(showShips.isSelected());
+            this.neutrales.setShowStadistics(stadistics.isSelected());
+            this.neutrales.setProduction(columnas);
         }
     }
     
     public boolean isValid(){
         boolean valor = true;
-        if(id.isEmpty()||filas==-1||columnas==-1||planetasNeutrales==-1){
+        if(id.isEmpty()||filas==-1||columnas==-1){
             valor = false;
         }
         return valor;
     }
     
     public Map(){}
+
+    public int getFinalization() {
+        return finalization;
+    }
+
+    public void setFinalization(int finalization) {
+        this.finalization = finalization;
+    }
 
     public String getId() {
         return id;
@@ -77,14 +100,6 @@ public class Map {
 
     public void setPlanetasNeutrales(int planetasNeutrales) {
         this.planetasNeutrales = planetasNeutrales;
-    }
-
-    public boolean isAlAzar() {
-        return alAzar;
-    }
-
-    public void setAlAzar(boolean alAzar) {
-        this.alAzar = alAzar;
     }
 
     public boolean isMapaCiego() {

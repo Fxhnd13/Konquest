@@ -5,6 +5,7 @@
  */
 package BackEnd.Objects;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -13,14 +14,14 @@ import java.util.ArrayList;
  */
 public class Player {
     
-    private String name;
-    private int type;
+    private String name, color, type;
     
-    public Player(String name, int type){
+    public Player(String name, String color, String type){
         this.name = name;
+        this.color = color;
         this.type = type;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -29,12 +30,18 @@ public class Player {
         this.name = name;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
-    
+    public String getColorPlayer() {
+        return color;
+    }
+
+    public void setColorPlayer(String colorPlayer) {
+        this.color = colorPlayer;
+    }
 }

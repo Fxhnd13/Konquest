@@ -5,8 +5,12 @@
  */
 package UI;
 
+import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,10 +19,15 @@ import javax.swing.JTable;
 public class UIManager {
     
     public void cleanTable(JTable table){
-        
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
     }
     
-    public void cleanLabel(JLabel label){
-        
+    public void cleanLabel(JTextField text){
+        text.setText("");
+    }
+    
+    public static void addBorder(JLabel label, Border b ) {
+        label.setBorder( b );
     }
 }

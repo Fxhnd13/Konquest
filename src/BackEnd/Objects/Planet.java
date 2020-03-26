@@ -17,9 +17,19 @@ import javax.swing.plaf.ComponentUI;
  */
 public class Planet{
     
-    private int naves, production, positionX, positionY; //alto y ancho respectivamente
-    private String colorPlayer, name, conqueror;
+    private int ships, production, positionX, positionY; //alto y ancho respectivamente
+    private String name, conqueror;
     private double deathPercentage;
+
+    public Planet(String name, String ships, String production, String Deathless, String Conquer) {
+        this.name = name;
+        this.ships = Integer.parseInt(ships);
+        this.production = Integer.parseInt(production);
+        this.deathPercentage = Double.parseDouble(Deathless);
+        this.conqueror = Conquer;
+    }
+
+    public Planet() {}
 
     public int getPositionX() {
         return positionX;
@@ -45,12 +55,12 @@ public class Planet{
         this.conqueror = conqueror;
     }
     
-    public int getNaves() {
-        return naves;
+    public int getShips() {
+        return ships;
     }
 
-    public void setNaves(int naves) {
-        this.naves = naves;
+    public void setShips(int ships) {
+        this.ships = ships;
     }
 
     public int getProduction() {
@@ -59,14 +69,6 @@ public class Planet{
 
     public void setProduction(int production) {
         this.production = production;
-    }
-    
-    public String getColorPlayer() {
-        return colorPlayer;
-    }
-
-    public void setColorPlayer(String colorPlayer) {
-        this.colorPlayer = colorPlayer;
     }
 
     public String getName() {
