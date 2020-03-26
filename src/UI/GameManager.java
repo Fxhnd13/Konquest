@@ -8,7 +8,9 @@ package UI;
 import BackEnd.Configuration.ConfigurationNeutrales;
 import BackEnd.Configuration.GameConfiguration;
 import BackEnd.Objects.Action;
+import BackEnd.Objects.Actions;
 import BackEnd.Objects.Atack;
+import BackEnd.Objects.Atacks;
 import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
@@ -41,16 +43,16 @@ public class GameManager {
     private GameConfiguration configuration = new GameConfiguration(); 
     private boolean alAzar = false, victoria = false;
     private int turno = 1, jugadorEnTurno=0, state = 0;
+    private Atacks atacks = new Atacks();
+    private Actions actions = new Actions();
+    private Cell exitCell = null, destinyCell= null;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Planet> planets = new ArrayList<Planet>();
-    private ArrayList<Atack> atacks = new ArrayList<Atack>();
     private ArrayList<Return> returns = new ArrayList<Return>();
-    private ArrayList<Action> actions = new ArrayList<Action>();
     private ArrayList<String> mensajes = new ArrayList<String>();
-    private Cell exitCell = null, destinyCell= null;
     
     public void cambiarJugador(JTextArea bitacora, JPanel spacePanel){
-        actions.add(new Action(turno+1,0,null, players.get(jugadorEnTurno).getName()));
+        actions.getAccionesARealizar().add(new Action(turno,0,null, players.get(jugadorEnTurno).getName()));
         jugadorEnTurno++;
         if(jugadorEnTurno==players.size()){
             jugadorEnTurno=0;
@@ -60,9 +62,21 @@ public class GameManager {
     
     public void terminarTurno(JTextArea bitacora, JPanel spacePanel){
         turno++;
-        for (Atack atack : atacks) {
-            if(atack.getTargetTurn()==turno){
-                realizarAtaque(atack, bitacora);
+        for (Action action : actions.getAccionesARealizar()) {
+            switch(action.getType()){
+                case 0: actions.getAccionesRealizadas().add(action); break;
+                case 1:{
+                    atacks.getAtaquesActivos().add(action.getAtack());
+                    actions.getAccionesRealizadas().add(action); 
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < atacks.getAtaquesActivos().size(); i++) {
+            if(atacks.getAtaquesActivos().get(i).getTargetTurn()==turno){
+                realizarAtaque(atacks.getAtaquesActivos().get(i), bitacora);
+                atacks.getAtaquesRealizados().add(atacks.getAtaquesActivos().get(i));
+                atacks.getAtaquesActivos().remove(i);
                 repintarMapa(spacePanel);
             }
         }
@@ -81,6 +95,7 @@ public class GameManager {
         for (String mensaje : mensajes) {
             bitacora.setText(bitacora.getText()+"\n"+mensaje);
         }
+        actions.getAccionesARealizar().clear();
         mensajes.clear();
         verificarVictoria();
     }
@@ -116,19 +131,22 @@ public class GameManager {
     public void realizarAtaque(Atack atack, JTextArea bitacora){
         Planet destino = Utilities.getPlanetaPorNombre(atack.getNameDestinyPlanet(), planets);
         Planet salida = Utilities.getPlanetaPorNombre(atack.getNameExitPlanet(), planets);
-        int cantidadQueEliminaElAtacante = (int) (atack.getShips() * atack.getPorcentajeDeMuerte());
-        int cantidadQueEliminaElDefensor = (int) (destino.getShips()*destino.getDeathPercentage());
-        int cantidadSobranteAtacante = atack.getShips()-cantidadQueEliminaElDefensor;
-        int cantidadSobranteDefensor = destino.getShips() - cantidadQueEliminaElAtacante;
         if(!salida.getConqueror().equals(destino.getConqueror())){
+            int cantidadQueEliminaElAtacante = (int) (atack.getShips() * atack.getPorcentajeDeMuerte());
+            int cantidadQueEliminaElDefensor = (int) (destino.getShips() * destino.getDeathPercentage());
+            atack.setNavesAliadasEliminadas((cantidadQueEliminaElDefensor>destino.getShips())?destino.getShips():cantidadQueEliminaElDefensor);
+            atack.setNavesEnemigasEliminadas((cantidadQueEliminaElAtacante>atack.getShips())?atack.getShips():cantidadQueEliminaElAtacante);
+            int cantidadSobranteAtacante = atack.getShips()-cantidadQueEliminaElDefensor;
+            int cantidadSobranteDefensor = destino.getShips() - cantidadQueEliminaElAtacante;
             if(cantidadSobranteDefensor>cantidadSobranteAtacante){
                 if(cantidadSobranteAtacante>0){
-                    Return regreso = new Return(destino.getName(), salida.getName(), cantidadSobranteAtacante, turno+GameUtilities.calcularDistancia(destino, salida));
-                    returns.add(regreso);
+                    Return retorno = new Return(destino.getName(), salida.getName(), cantidadSobranteAtacante, turno+GameUtilities.calcularDistancia(destino, salida));
+                    returns.add(retorno);
                 }
                 destino.setShips(cantidadSobranteDefensor);
                 bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": El planeta "+destino.getName()+" se ha defendido del ataque del conquistador "+salida.getConqueror());
             }else if(cantidadSobranteDefensor<cantidadSobranteAtacante){
+                atack.setVictoria(true);
                 destino.setConqueror(salida.getConqueror());
                 destino.setShips(cantidadSobranteDefensor+cantidadSobranteAtacante);
                 bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": El planeta "+destino.getName()+" ha caído ante el conquistador "+salida.getConqueror());
@@ -158,8 +176,7 @@ public class GameManager {
             }
             if(confirmacion == JOptionPane.OK_OPTION){
                 Utilities.planetAt(exitCell, planets).setShips(Utilities.planetAt(exitCell, planets).getShips()-cantidad);
-                actions.add(new Action(turno+1,1,atack, players.get(jugadorEnTurno).getName()));
-                atacks.add(atack);
+                actions.getAccionesARealizar().add(new Action(turno,1,atack, players.get(jugadorEnTurno).getName()));
                 cancelAtack(label, buton);
             }else{
                 cancelAtack(label, buton);
@@ -196,9 +213,11 @@ public class GameManager {
         this.configuration = new GameConfiguration();
         this.planets.clear();
         this.players.clear();
-        this.actions.clear();
+        this.actions.getAccionesARealizar().clear();
+        this.actions.getAccionesRealizadas().clear();
         this.returns.clear();
-        this.atacks.clear();
+        this.atacks.getAtaquesActivos().clear();
+        this.atacks.getAtaquesRealizados().clear();
     }
     
     public void repintarMapa(JPanel spacePanel){

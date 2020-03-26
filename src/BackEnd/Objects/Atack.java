@@ -12,8 +12,9 @@ package BackEnd.Objects;
 public class Atack {
     
     private String nameExitPlanet, nameDestinyPlanet;
+    private boolean victoria = false;
     private double porcentajeDeMuerte;
-    private int ships, exitTurn, targetTurn;
+    private int ships, exitTurn, targetTurn, navesAliadasEliminadas, navesEnemigasEliminadas;
 
     public Atack(String exitPlanet, String destinyPlanet, int ships, int exitTurn, int targetTurn, double porcentaje){
         this.nameExitPlanet = exitPlanet;
@@ -70,6 +71,30 @@ public class Atack {
 
     public void setTargetTurn(int targetTurn) {
         this.targetTurn = targetTurn;
+    }
+
+    public boolean isVictoria() {
+        return victoria;
+    }
+
+    public void setVictoria(boolean victoria) {
+        this.victoria = victoria;
+    }
+
+    public int getNavesAliadasEliminadas() {
+        return navesAliadasEliminadas;
+    }
+
+    public void setNavesAliadasEliminadas(int navesAliadasEliminadas) {
+        this.navesAliadasEliminadas = navesAliadasEliminadas;
+    }
+
+    public int getNavesEnemigasEliminadas() {
+        return navesEnemigasEliminadas;
+    }
+
+    public void setNavesEnemigasEliminadas(int navesEnemigasEliminadas) {
+        this.navesEnemigasEliminadas = navesEnemigasEliminadas;
     }
     
 }

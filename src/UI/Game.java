@@ -144,6 +144,9 @@ public class Game extends javax.swing.JFrame {
         BotonJuegoAlAzar = new javax.swing.JMenuItem();
         BotonJuegoPersonalizado = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         GameConfigurationP.setTitle("Configuracion Juego Personalizado");
@@ -1007,9 +1010,24 @@ public class Game extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Opciones");
+
+        jMenuItem1.setText("Medir");
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText("Ver Ataques Realizados");
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Ver Flotas En El Espacio");
+        jMenu2.add(jMenuItem3);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Acerca de...");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -1238,6 +1256,7 @@ public class Game extends javax.swing.JFrame {
 
     private void EndTurnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTurnButtonActionPerformed
         gameManager.cambiarJugador(Bitacora, SpacePanel);
+        gameManager.cancelAtack(StateLabel, AtackButton);
         TurnLabel.setText(String.valueOf(gameManager.getTurno()));
         NamePlayerInTurn.setText(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName());
         NamePlayerInTurn.setForeground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
@@ -1249,6 +1268,12 @@ public class Game extends javax.swing.JFrame {
             GameResults.setVisible(true);
         }
     }//GEN-LAST:event_EndTurnButtonActionPerformed
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        JOptionPane.showMessageDialog(null, "Desarrollador: José Carlos Soberanis Ramírez"
+                + "\nCarnet: 201730246"
+                + "\nVersion: ", "Información del desarrollador", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jMenu3MouseClicked
 
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
@@ -1446,6 +1471,9 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
