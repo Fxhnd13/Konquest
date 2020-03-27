@@ -5,10 +5,13 @@
  */
 package UI;
 
+import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
+import BackEnd.Utilities.Utilities;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -20,8 +23,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UIManager {
     
-    public void doResultTable(JTable table, ArrayList<Player> players){
-        
+    public void doResultTable(JTable table, ArrayList<Player> players, ArrayList<Planet> planets){
+        cleanTable(table);
+        Utilities.ordenarJugadoresPorConquistas(players, planets);
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        for (Player player : players) {
+            model.addRow(new String[]{player.getName(), String.valueOf(player.getPlanetasConquistados()), String.valueOf(player.getNavesCreadas()), String.valueOf(player.getNavesDestruidas()), String.valueOf(player.getAtaquesRealizados())});
+        }
+        JOptionPane.showMessageDialog(null, "El ganador de la partida fue "+players.get(0).getName()+" ¡Felicidades!", "Ganador", JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void cleanTable(JTable table){

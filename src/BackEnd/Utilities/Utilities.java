@@ -174,5 +174,17 @@ public class Utilities {
         }
         return valor;
     }
+
+    public static void ordenarJugadoresPorConquistas(ArrayList<Player> players, ArrayList<Planet> planets) {
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < players.size()-1; j++) {
+                if(GameUtilities.planetasConquistadosPor(players.get(j).getName(), planets)<GameUtilities.planetasConquistadosPor(players.get(j+1).getName(), planets)){
+                    Player aux = players.get(j+1);
+                    players.set(j+1, players.get(j));
+                    players.set(j, aux);
+                }
+            }
+        }
+    }
    
 }

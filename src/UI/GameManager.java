@@ -221,8 +221,8 @@ public class GameManager {
     }
 
     public void reset(JPanel spacePanel, JTextArea bitacora){
-        spacePanel.removeAll();
-        bitacora.setText("");
+        if(spacePanel!=null)spacePanel.removeAll();
+        if(bitacora!=null)bitacora.setText("");
         this.configuration = new GameConfiguration();
         this.planets.clear();
         this.players.clear();

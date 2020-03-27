@@ -102,7 +102,7 @@ public class GameUtilities {
         return posicion;
     }
     
-    public int planetasConquistadosPor(String nombre, ArrayList<Planet> planets){
+    public static int planetasConquistadosPor(String nombre, ArrayList<Planet> planets){
         int cantidad = 0;
         for (Planet planet : planets) {
             if(planet.getConqueror().equals(nombre))cantidad++;

@@ -851,6 +851,11 @@ public class Game extends javax.swing.JFrame {
         jScrollPane5.setViewportView(GameResultTable);
 
         jButton1.setText("Terminar Partida");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Guardar Repeticion");
 
@@ -1267,7 +1272,7 @@ public class Game extends javax.swing.JFrame {
         NamePlayerInTurn.setForeground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
         StateLabel.setForeground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
         if(gameManager.isVictoria()){
-            uiManager.doResultTable(GameResultTable, gameManager.getPlayers());
+            uiManager.doResultTable(GameResultTable, gameManager.getPlayers(), gameManager.getPlanets());
             this.AtackButton.setEnabled(false);
             this.EndTurnButton.setEnabled(false);
             GameResults.setVisible(true);
@@ -1277,13 +1282,17 @@ public class Game extends javax.swing.JFrame {
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         JOptionPane.showMessageDialog(null, "Desarrollador: José Carlos Soberanis Ramírez"
                 + "\nCarnet: 201730246"
-                + "\nVersion: ", "Información del desarrollador", JOptionPane.INFORMATION_MESSAGE);
+                + "\nVersion: 1.09", "Información del desarrollador", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         gameManager.setState(2);
         StateLabel.setText(" Midiendo: Seleccionando un planeta de salida.");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        gameManager.reset(null, null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
