@@ -1153,7 +1153,7 @@
     <Container class="javax.swing.JDialog" name="GameResults">
       <Properties>
         <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[800, 300]"/>
+          <Dimension value="[800, 320]"/>
         </Property>
       </Properties>
 
@@ -1290,6 +1290,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Medir"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>

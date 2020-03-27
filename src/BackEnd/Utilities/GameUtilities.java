@@ -19,11 +19,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GameUtilities {
     
-    public static int calcularDistancia(Cell salida, Cell destino){
-        int valor = 0;
+    public static double calcularDistancia(Cell salida, Cell destino){
+        double valor = 0;
             int distanciaEnX = salida.getPosicionX()-destino.getPosicionX();
             int distanciaEnY = salida.getPosicionY()-destino.getPosicionY();
-            valor = (int) Math.sqrt((distanciaEnX*distanciaEnX)+(distanciaEnY*distanciaEnY));
+            valor = Math.sqrt((distanciaEnX*distanciaEnX)+(distanciaEnY*distanciaEnY));
         return valor;
     }
     

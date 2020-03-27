@@ -66,7 +66,16 @@ public class GameManager {
             switch(action.getType()){
                 case 0: actions.getAccionesRealizadas().add(action); break;
                 case 1:{
+                    Planet salida = Utilities.getPlanetaPorNombre(action.getAtack().getNameExitPlanet(), planets);
+                    Planet destino = Utilities.getPlanetaPorNombre(action.getAtack().getNameDestinyPlanet(), planets);
+                    action.getAtack().setExitTurn(turno);
+                    action.getAtack().setTargetTurn(turno+Utilities.turnosParaLlegar(GameUtilities.calcularDistancia(salida, destino)));
                     atacks.getAtaquesActivos().add(action.getAtack());
+                    if(salida.getConqueror().equals(destino.getConqueror())){
+                        mensajes.add("Turno "+action.getAtack().getExitTurn()+": Se han enviado refuerzos del planeta "+action.getAtack().getNameExitPlanet()+" hacia el planeta "+action.getAtack().getNameDestinyPlanet()+" que llegará en el turno "+action.getAtack().getTargetTurn());
+                    }else{
+                        mensajes.add("Turno "+action.getAtack().getExitTurn()+": Se ha enviado un ataque del planeta "+action.getAtack().getNameExitPlanet()+" hacia el planeta "+action.getAtack().getNameDestinyPlanet()+" que llegará en el turno "+action.getAtack().getTargetTurn());
+                    }
                     actions.getAccionesRealizadas().add(action); 
                     break;
                 }
@@ -144,18 +153,18 @@ public class GameManager {
                     returns.add(retorno);
                 }
                 destino.setShips(cantidadSobranteDefensor);
-                bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": El planeta "+destino.getName()+" se ha defendido del ataque del conquistador "+salida.getConqueror());
+                bitacora.setText(bitacora.getText()+"\nTurno "+turno+": El planeta "+destino.getName()+" se ha defendido del ataque del conquistador "+salida.getConqueror());
             }else if(cantidadSobranteDefensor<cantidadSobranteAtacante){
                 atack.setVictoria(true);
                 destino.setConqueror(salida.getConqueror());
                 destino.setShips(cantidadSobranteDefensor+cantidadSobranteAtacante);
-                bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": El planeta "+destino.getName()+" ha caído ante el conquistador "+salida.getConqueror());
+                bitacora.setText(bitacora.getText()+"\nTurno "+turno+": El planeta "+destino.getName()+" ha caído ante el conquistador "+salida.getConqueror());
             }else{
-                bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": Ha habido un empate, el planeta se ha defendido pero quedado sin naves.");
+                bitacora.setText(bitacora.getText()+"\nTurno "+turno+": Ha habido un empate, el planeta se ha defendido pero quedado sin naves.");
             }
         }else{
             destino.setShips(destino.getShips()+atack.getShips());
-            bitacora.setText(bitacora.getText()+"\nTurno "+(turno+1)+": Han llegado los refuerzos del planeta "+salida.getName()+" al planeta "+destino.getName());
+            bitacora.setText(bitacora.getText()+"\nTurno "+turno+": Han llegado los refuerzos del planeta "+salida.getName()+" al planeta "+destino.getName());
         }
     }
     
@@ -163,16 +172,14 @@ public class GameManager {
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog("¿Cuántas naves desea enviar? (Disponibles: "+Utilities.planetAt(exitCell, planets).getShips()+")"));
         if(cantidad <= Utilities.planetAt(exitCell, planets).getShips()){
             Atack atack = new Atack(Utilities.planetAt(exitCell, planets).getName(), Utilities.planetAt(destinyCell, planets).getName(),
-                                        cantidad, turno+1, 1+turno+GameUtilities.calcularDistancia(exitCell, destinyCell), 
-                                        Utilities.planetAt(exitCell, planets).getDeathPercentage());
+                                        cantidad,Utilities.planetAt(exitCell, planets).getDeathPercentage());
             int confirmacion = 0;
             if(Utilities.planetAt(exitCell, planets).getConqueror().equals(Utilities.planetAt(destinyCell, planets).getConqueror())){
-                confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea enviar refuerzos de "+Utilities.planetAt(exitCell, planets).getName()+" hacia "+Utilities.planetAt(destinyCell, planets).getName()+" con "+atack.getShips()+" naves?");
-                mensajes.add("Turno "+(turno+1)+": El conquistador "+Utilities.planetAt(exitCell, planets).getConqueror()+" ha enviado refuerzos del planeta "+Utilities.planetAt(exitCell, planets).getName()+" hacia el planeta "+Utilities.planetAt(destinyCell, planets).getName()+" que llegará en el turno "+atack.getTargetTurn());
+                confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea enviar refuerzos de "+Utilities.planetAt(exitCell, planets).getName()+" hacia "+Utilities.planetAt(destinyCell, planets).getName()+" con "+atack.getShips()+" naves?"
+                        + "\nLlegará en el turno: "+(1+turno+Utilities.turnosParaLlegar(GameUtilities.calcularDistancia(exitCell, destinyCell))));
             }else{
                 confirmacion = JOptionPane.showConfirmDialog(null, "¿Desea enviar un ataque de "+Utilities.planetAt(exitCell, planets).getName()+" hacia "+Utilities.planetAt(destinyCell, planets).getName()+" con una cantidad de "+cantidad+" naves?"
-                        + "\nLlegará en el turno: "+atack.getTargetTurn());
-                mensajes.add("Turno "+(turno+1)+": El conquistador "+Utilities.planetAt(exitCell, planets).getConqueror()+" ha enviado un ataque del planeta "+Utilities.planetAt(exitCell, planets).getName()+" hacia el planeta "+Utilities.planetAt(destinyCell, planets).getName()+" que llegará en el turno "+atack.getTargetTurn());
+                        + "\nLlegará en el turno: "+(1+turno+Utilities.turnosParaLlegar(GameUtilities.calcularDistancia(exitCell, destinyCell))));
             }
             if(confirmacion == JOptionPane.OK_OPTION){
                 Utilities.planetAt(exitCell, planets).setShips(Utilities.planetAt(exitCell, planets).getShips()-cantidad);
@@ -193,6 +200,12 @@ public class GameManager {
         this.destinyCell = null;
         label.setText("Planeando...");
         buton.setText("Atacar");
+    }
+    
+    public void showDistance(JLabel label, JButton buton){
+        JOptionPane.showMessageDialog(null, "La distancia entre el planeta "+Utilities.planetAt(exitCell, planets).getName()
+            +" y el planeta "+Utilities.planetAt(destinyCell, planets).getName()+" es de "+GameUtilities.calcularDistancia(exitCell, destinyCell));
+        cancelAtack(label, buton);
     }
     
     public void doPlayers(JTable tablePlayers){

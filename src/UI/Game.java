@@ -830,7 +830,7 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        GameResults.setSize(new java.awt.Dimension(800, 300));
+        GameResults.setSize(new java.awt.Dimension(800, 320));
 
         GameResultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1012,6 +1012,11 @@ public class Game extends javax.swing.JFrame {
         jMenu2.setText("Opciones");
 
         jMenuItem1.setText("Medir");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setText("Ver Ataques Realizados");
@@ -1275,6 +1280,11 @@ public class Game extends javax.swing.JFrame {
                 + "\nVersion: ", "Información del desarrollador", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenu3MouseClicked
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        gameManager.setState(2);
+        StateLabel.setText(" Midiendo: Seleccionando un planeta de salida.");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
         NamePlayerInTurn.setText(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName());
@@ -1334,16 +1344,22 @@ public class Game extends javax.swing.JFrame {
                 cell.addMouseListener(new java.awt.event.MouseAdapter() {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         if(gameManager.getState()!=0){
-                            Utilities.planetAt(cell, gameManager.getPlanets());
                             if(Utilities.planetAt(cell, gameManager.getPlanets())!=null){
                                 if(gameManager.getExitCell()==null){
-                                    if(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName().equals(Utilities.planetAt(cell, gameManager.getPlanets()).getConqueror())){
+                                    if(gameManager.getState()==1){
+                                        if(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName().equals(Utilities.planetAt(cell, gameManager.getPlanets()).getConqueror())){
+                                            gameManager.setExitCell(cell);
+                                            StateLabel.setText("Atacando: Seleccionando un planeta destino.");
+                                        }
+                                        
+                                    }else{
                                         gameManager.setExitCell(cell);
-                                        StateLabel.setText("Atacando: Seleccionando un planeta destino.");
+                                        StateLabel.setText("Midiendo: Seleccionando un planeta destino.");
                                     }
                                 }else{
                                     gameManager.setDestinyCell(cell);
-                                    gameManager.confirmAtack(StateLabel, AtackButton, Bitacora);
+                                    if(gameManager.getState()==1)gameManager.confirmAtack(StateLabel, AtackButton, Bitacora);
+                                    if(gameManager.getState()==2)gameManager.showDistance(StateLabel, AtackButton);
                                 }
                             }
                         }

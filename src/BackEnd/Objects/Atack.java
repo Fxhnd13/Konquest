@@ -16,7 +16,7 @@ public class Atack {
     private double porcentajeDeMuerte;
     private int ships, exitTurn, targetTurn, navesAliadasEliminadas, navesEnemigasEliminadas;
 
-    public Atack(String exitPlanet, String destinyPlanet, int ships, int exitTurn, int targetTurn, double porcentaje){
+    public Atack(String exitPlanet, String destinyPlanet, int ships, double porcentaje){
         this.nameExitPlanet = exitPlanet;
         this.nameDestinyPlanet = destinyPlanet;
         this.ships = ships;

@@ -18,6 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utilities {
     
+    public static int turnosParaLlegar(double cantidad){
+        int valor = (int) cantidad;
+        double valor2 = (double) valor;
+        if(valor2<cantidad) valor++;
+        return valor; 
+    }
+    
     public static int[] numerosAleatoriosEntre(int cantidad, int b){
         int[] numeros = new int[cantidad];
         for (int i = 0; i < cantidad; i++) {

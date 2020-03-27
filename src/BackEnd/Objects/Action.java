@@ -24,16 +24,16 @@ public class Action {
             case 0: break;
             case 1: this.atack = atack; break;
         }
-//        if(type!=0){
-//            this.atack = (Atack) objeto;
-//            System.out.println("Se realizó un ataque\nSalida: "+atack.getNameExitPlanet()
-//                    +"\nDestino: "+atack.getNameDestinyPlanet()
-//                    +"\nNaves: "+atack.getShips()
-//                    +"\nTurno Salida: "+atack.getExitTurn()
-//                    +"\nTurno Llegada: "+atack.getTargetTurn());
-//        }else{
-//            System.out.println("EL jugador "+this.playerName+" termino su turno.");
-//        }
+        if(type!=0){
+            System.out.println("Se realizó un ataque\nSalida: "+atack.getNameExitPlanet()
+                    +"\nDestino: "+atack.getNameDestinyPlanet()
+                    +"\nNaves: "+atack.getShips()
+                    +"\nTurno Salida: "+atack.getExitTurn()
+                    +"\nTurno Llegada: "+atack.getTargetTurn()
+                    +"\n\n");
+        }else{
+            System.out.println("EL jugador "+this.playerName+" termino su turno.\n\n");
+        }
     }
     
     public int getTurn() {
