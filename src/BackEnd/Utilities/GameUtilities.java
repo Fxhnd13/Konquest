@@ -53,7 +53,7 @@ public class GameUtilities {
         }
     }
     
-    public static void doPlanets(JTable tablePlanets, int filas, int columnas, ArrayList<Planet> planets, GameConfiguration configuration){
+    public static void doPlanets(JTable tablePlanets, int filas, int columnas, ArrayList<Player> players, ArrayList<Planet> planets, GameConfiguration configuration){
         DefaultTableModel modelTablePlanets = (DefaultTableModel) tablePlanets.getModel();
         int[] posiciones = Utilities.numerosAleatoriosEntre(modelTablePlanets.getRowCount(), filas*columnas);
         for (int i = 0; i < modelTablePlanets.getRowCount(); i++) {
@@ -65,6 +65,8 @@ public class GameUtilities {
             planet.setConqueror(modelTablePlanets.getValueAt(i, 4).toString());
             planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]);
             planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]);
+            players.get(i).setNavesCreadas(planet.getShips());
+            players.get(i).setPlanetasConquistados(1);
             planets.add(planet);
             configuration.getPlanets().add(planet);
         }
@@ -81,6 +83,8 @@ public class GameUtilities {
             planet.setName(nombres.get(i));
             if(i<players.size()){
                 planet.setConqueror(players.get(i).getName());
+                players.get(i).setNavesCreadas(planet.getShips());
+                players.get(i).setPlanetasConquistados(1);
             }else{
                 planet.setConqueror("Nadie");
             }

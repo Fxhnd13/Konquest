@@ -97,6 +97,7 @@ public class GameManager {
         }
         for (Planet planet : planets) {
             planet.setShips(planet.getShips()+planet.getProduction());
+            if(!planet.getConqueror().equals("Nadie"))Utilities.getPlayer(planet, players).setNavesCreadas(Utilities.getPlayer(planet, players).getNavesCreadas()+planet.getProduction());
             if(this.configuration.getMap().isAcumular()){
                 planet.setProduction(planet.getProduction()+1);
             }
@@ -143,6 +144,8 @@ public class GameManager {
         if(!salida.getConqueror().equals(destino.getConqueror())){
             int cantidadQueEliminaElAtacante = (int) (atack.getShips() * atack.getPorcentajeDeMuerte());
             int cantidadQueEliminaElDefensor = (int) (destino.getShips() * destino.getDeathPercentage());
+            if(!destino.getConqueror().equals("Nadie"))Utilities.getPlayer(destino, players).setNavesDestruidas(Utilities.getPlayer(destino, players).getNavesDestruidas()-cantidadQueEliminaElAtacante);
+            if(!salida.getConqueror().equals("Nadie"))Utilities.getPlayer(salida, players).setNavesDestruidas(Utilities.getPlayer(salida, players).getNavesDestruidas()-cantidadQueEliminaElAtacante);
             atack.setNavesAliadasEliminadas((cantidadQueEliminaElDefensor>destino.getShips())?destino.getShips():cantidadQueEliminaElDefensor);
             atack.setNavesEnemigasEliminadas((cantidadQueEliminaElAtacante>atack.getShips())?atack.getShips():cantidadQueEliminaElAtacante);
             int cantidadSobranteAtacante = atack.getShips()-cantidadQueEliminaElDefensor;
@@ -158,6 +161,8 @@ public class GameManager {
                 atack.setVictoria(true);
                 destino.setConqueror(salida.getConqueror());
                 destino.setShips(cantidadSobranteDefensor+cantidadSobranteAtacante);
+                if(!salida.getConqueror().equals("Nadie"))Utilities.getPlayer(salida, players).setPlanetasConquistados(Utilities.getPlayer(salida, players).getPlanetasConquistados()+1);
+                if(!destino.getConqueror().equals("Nadie"))Utilities.getPlayer(destino, players).setPlanetasConquistados(Utilities.getPlayer(destino, players).getPlanetasConquistados()-1);
                 bitacora.setText(bitacora.getText()+"\nTurno "+turno+": El planeta "+destino.getName()+" ha caído ante el conquistador "+salida.getConqueror());
             }else{
                 bitacora.setText(bitacora.getText()+"\nTurno "+turno+": Ha habido un empate, el planeta se ha defendido pero quedado sin naves.");
@@ -183,6 +188,7 @@ public class GameManager {
             }
             if(confirmacion == JOptionPane.OK_OPTION){
                 Utilities.planetAt(exitCell, planets).setShips(Utilities.planetAt(exitCell, planets).getShips()-cantidad);
+                players.get(jugadorEnTurno).setAtaquesRealizados(players.get(jugadorEnTurno).getAtaquesRealizados()+1);
                 actions.getAccionesARealizar().add(new Action(turno,1,atack, players.get(jugadorEnTurno).getName()));
                 cancelAtack(label, buton);
             }else{
@@ -213,7 +219,7 @@ public class GameManager {
     }
     
     public void doPlanets(JTable tablePlanets, int filas, int columnas){
-        GameUtilities.doPlanets(tablePlanets, filas, columnas, planets, configuration);
+        GameUtilities.doPlanets(tablePlanets, filas, columnas,players, planets, configuration);
     }
 
     void doPlanets(int cantidad, int filas, int columnas) {

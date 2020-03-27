@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Player {
     
     private String name, color, type;
-    private int navesCreadas, navesDestruidas, planetasConquistados, ataquesRealizados;
+    private int navesCreadas=0, navesDestruidas=0, planetasConquistados=0, ataquesRealizados=0;
     
     public Player(String name, String color, String type){
         this.name = name;
