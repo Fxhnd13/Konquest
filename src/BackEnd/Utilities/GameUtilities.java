@@ -5,6 +5,7 @@
  */
 package BackEnd.Utilities;
 
+import Analizadores.Objects.Token;
 import BackEnd.Configuration.GameConfiguration;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
@@ -18,6 +19,46 @@ import javax.swing.table.DefaultTableModel;
  * @author jose_
  */
 public class GameUtilities {
+    
+    public static ArrayList<Token> getTokens(ArrayList<Token> tokens, int opcion){
+        ArrayList<Token> resultado = new ArrayList<Token>();
+        for (int i = 0; i < tokens.size(); i++) {
+            switch(opcion){
+                case 1:{
+                    if(tokens.get(i).getType().equals("PR_MAPA")){
+                        i++;
+                        while((!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                            resultado.add(tokens.get(i));
+                            i++;
+                        }
+                    }
+                    break;
+                }
+                case 2:{
+                    if(tokens.get(i).getType().equals("PR_PLANETAS")||tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES")){
+                        i++;
+                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                            resultado.add(tokens.get(i));
+                        }
+                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                            resultado.add(tokens.get(i));
+                        }
+                    }
+                    break;
+                }
+                case 3:{
+                    if(tokens.get(i).getType().equals("PR_JUGADORES")){
+                        i++;
+                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_PLANETAS"))){
+                            resultado.add(tokens.get(i));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return resultado;
+    }
     
     public static double calcularDistancia(Cell salida, Cell destino){
         double valor = 0;

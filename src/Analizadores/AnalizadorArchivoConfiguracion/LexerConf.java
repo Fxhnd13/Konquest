@@ -4,6 +4,7 @@ package Analizadores.AnalizadorArchivoConfiguracion;
 
 import java_cup.runtime.Symbol;
 import Analizadores.Objects.Token;
+import Analizadores.Objects.ErrorMessage;
 import java.util.ArrayList;
 
 
@@ -397,9 +398,23 @@ public class LexerConf implements java_cup.runtime.Scanner {
 
   /* user code: */
     private ArrayList<Token> tokens = new ArrayList<Token>();
-    private ArrayList<Token> errores = new ArrayList<Token>();
+    private ArrayList<ErrorMessage> errores = new ArrayList<ErrorMessage>();
     private boolean existenTokens = false;
     
+    public void analizar(){
+        try{
+            while(true){
+
+                // Obtener el token analizado y mostrar su información
+                Symbol sym = this.next_token();
+                if (!this.existenTokens())
+                break;
+            }
+        }catch (Exception e){
+          System.out.println(e.toString());
+        }
+    }
+
     public boolean existenTokens(){
         return this.existenTokens;
     }
@@ -408,7 +423,7 @@ public class LexerConf implements java_cup.runtime.Scanner {
         return this.tokens;
     }
         
-    public ArrayList<Token> getErrores(){
+    public ArrayList<ErrorMessage> getErrores(){
         return this.errores;
     }
 
@@ -812,7 +827,7 @@ public class LexerConf implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { 
+            { errores.add(new ErrorMessage(yyline, yycolumn, yytext(), "No es un caracter aceptado por el lenguaje"));
             } 
             // fall through
           case 37: break;

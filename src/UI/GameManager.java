@@ -5,6 +5,7 @@
  */
 package UI;
 
+import Analizadores.Objects.Token;
 import BackEnd.Configuration.ConfigurationNeutrales;
 import BackEnd.Configuration.GameConfiguration;
 import BackEnd.Objects.Action;
@@ -270,6 +271,111 @@ public class GameManager {
         }
     }
 
+    void verificarDatosJuego(ArrayList<Token> tokens) {
+        ArrayList<Token> tokensMapa = GameUtilities.getTokens(tokens, 1);
+        ArrayList<Token> tokensJugadors = GameUtilities.getTokens(tokens, 2);
+        ArrayList<Token> tokensPlanetas = GameUtilities.getTokens(tokens, 3);
+        for (int i = 0; i < tokensMapa.size(); i++) {
+            switch(tokens.get(i).getType()){
+                case "PR_ID":{
+                    i++;
+                    configuration.getMap().setId(tokens.get(i).getLexem());
+                    break;
+                }
+                case "PR_FILAS":{
+                    i++;
+                    configuration.getMap().setFilas(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_COLUMNAS":{
+                    i++;
+                    configuration.getMap().setColumnas(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_AZAR":{
+                    i++;
+                    if(tokens.get(i).getLexem().equals("true"))this.alAzar = true;
+                    break;
+                }
+                case "PR_CANTIDAD_PLANETAS_NEUTRALES":{
+                    i++;
+                    configuration.getMap().setPlanetasNeutrales(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_MAPA_CIEGO":{
+                    i++;
+                    if(tokens.get(i).getLexem().equals("true")) configuration.getMap().setMapaCiego(true);
+                    break;
+                }
+                case "PR_ACUMULAR":{
+                    i++;
+                    if(tokens.get(i).getLexem().equals("true")) configuration.getMap().setMapaCiego(true);
+                    break;
+                }
+                case "PR_MOSTRAR_NAVES":{
+                    i++;
+                    if(tokens.get(i).getLexem().equals("true")){
+                        configuration.getMap().getNeutrales().setShowShips(true);
+                    }else{
+                        configuration.getMap().getNeutrales().setShowShips(false);
+                    }
+                    break;
+                }
+                case "PR_MOSTRAR_ESTADISTICAS":{
+                    i++;
+                    if(tokens.get(i).getLexem().equals("true")){
+                        configuration.getMap().getNeutrales().setShowStadistics(true);
+                    }else{
+                        configuration.getMap().getNeutrales().setShowStadistics(false);
+                    }
+                    break;
+                }
+                case "PR_PRODUCCION":{
+                    i++;
+                    configuration.getMap().getNeutrales().setProduction(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_FINALIZACION":{
+                    i++;
+                    configuration.getMap().setFinalization(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < tokens.size(); i++) {
+            switch(tokens.get(i).getType()){
+                case "PR_MAPA":{
+                    i++;
+                    while((!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        
+                    }
+                    break;
+                }
+                case "PR_PLANETAS":{
+                    i++;
+                    while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                    
+                    }
+                    break;
+                }
+                case "PR_PLANETAS_NEUTRALES":{
+                    i++;
+                    while((!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                    
+                    }
+                    break;
+                }
+                case "PR_JUGADORES":{
+                    i++;
+                    while((!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_MAPA"))){
+                    
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    
     public boolean isVictoria() {
         return victoria;
     }
@@ -341,4 +447,5 @@ public class GameManager {
     public ArrayList<Planet> getPlanets() {
         return planets;
     }
+
 }

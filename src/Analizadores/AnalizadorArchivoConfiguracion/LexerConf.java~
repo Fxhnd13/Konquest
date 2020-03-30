@@ -4,6 +4,7 @@ package Analizadores.AnalizadorArchivoConfiguracion;
 
 import java_cup.runtime.Symbol;
 import Analizadores.Objects.Token;
+import Analizadores.Objects.ErrorMessage;
 import java.util.ArrayList;
 
 
@@ -397,9 +398,23 @@ public class LexerConf implements java_cup.runtime.Scanner {
 
   /* user code: */
     private ArrayList<Token> tokens = new ArrayList<Token>();
-    private ArrayList<Token> errores = new ArrayList<Token>();
+    private ArrayList<ErrorMessage> errores = new ArrayList<Token>();
     private boolean existenTokens = false;
     
+    public void analizar(){
+        try{
+            while(true){
+
+                // Obtener el token analizado y mostrar su información
+                Symbol sym = this.next_token();
+                if (!this.existenTokens())
+                break;
+            }
+        }catch (Exception e){
+          System.out.println(e.toString());
+        }
+    }
+
     public boolean existenTokens(){
         return this.existenTokens;
     }
@@ -408,7 +423,7 @@ public class LexerConf implements java_cup.runtime.Scanner {
         return this.tokens;
     }
         
-    public ArrayList<Token> getErrores(){
+    public ArrayList<ErrorMessage> getErrores(){
         return this.errores;
     }
 
@@ -812,17 +827,17 @@ public class LexerConf implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { 
+            { errores.add(new ErrorMessage(yyline, yycolumn, yytext(), "No es un caracter aceptado por el lenguaje"));
             } 
             // fall through
           case 37: break;
           case 2: 
-            { tokens.add(yytext(), "ID", yyline, yycolumn); this.existenTokens = true; return symbol(sym.ID, yytext());
+            { tokens.add(new Token(yytext(), "ID", yyline, yycolumn));this.existenTokens = true; return symbol(sym.ID, yytext());
             } 
             // fall through
           case 38: break;
           case 3: 
-            { tokens.add(yytext(), "ENTERO", yyline, yycolumn); this.existenTokens = true; return symbol(sym.ENTERO, yytext());
+            { tokens.add(new Token(yytext(), "ENTERO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.ENTERO, yytext());
             } 
             // fall through
           case 39: break;
@@ -867,12 +882,12 @@ public class LexerConf implements java_cup.runtime.Scanner {
             // fall through
           case 47: break;
           case 12: 
-            { tokens.add(yytext(), "DOUBLE", yyline, yycolumn);this.existenTokens= true; return symbol(sym.DOUBLE, yytext());
+            { tokens.add(new Token(yytext(), "DOUBLE", yyline, yycolumn));this.existenTokens= true; return symbol(sym.DOUBLE, yytext());
             } 
             // fall through
           case 48: break;
           case 13: 
-            { tokens.add(yytext(), "PR_ID", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_ID, "id");
+            { tokens.add(new Token(yytext(), "PR_ID", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_ID, "id");
             } 
             // fall through
           case 49: break;
@@ -882,42 +897,42 @@ public class LexerConf implements java_cup.runtime.Scanner {
             // fall through
           case 50: break;
           case 15: 
-            { tokens.add(yytext(), "PR_TIPO", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_TIPO, "tipo");
+            { tokens.add(new Token(yytext(), "PR_TIPO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_TIPO, "tipo");
             } 
             // fall through
           case 51: break;
           case 16: 
-            { tokens.add(yytext(), "BOOLEAN", yyline, yycolumn);this.existenTokens = true; return symbol(sym.BOOLEAN, yytext());
+            { tokens.add(new Token(yytext(), "BOOLEAN", yyline, yycolumn));this.existenTokens = true; return symbol(sym.BOOLEAN, yytext());
             } 
             // fall through
           case 52: break;
           case 17: 
-            { tokens.add(yytext(), "PR_NAVES", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_NAVES, "naves");
+            { tokens.add(new Token(yytext(), "PR_NAVES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_NAVES, "naves");
             } 
             // fall through
           case 53: break;
           case 18: 
-            { tokens.add(yytext(), "PR_FILAS", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_FILAS, "filas");
+            { tokens.add(new Token(yytext(), "PR_FILAS", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_FILAS, "filas");
             } 
             // fall through
           case 54: break;
           case 19: 
-            { tokens.add(yytext(), "TIPO", yyline, yycolumn);this.existenTokens = true; return symbol(sym.TIPO, yytext());
+            { tokens.add(new Token(yytext(), "TIPO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.TIPO, yytext());
             } 
             // fall through
           case 55: break;
           case 20: 
-            { tokens.add(yytext(), "PR_SIZE", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_SIZE, "tamaño");
+            { tokens.add(new Token(yytext(), "PR_SIZE", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_SIZE, "tamaño");
             } 
             // fall through
           case 56: break;
           case 21: 
-            { tokens.add(yytext(), "PR_AZAR", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_AZAR, "alAzar");
+            { tokens.add(new Token(yytext(), "PR_AZAR", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_AZAR, "alAzar");
             } 
             // fall through
           case 57: break;
           case 22: 
-            { tokens.add(yytext(), "PR_NOMBRE", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_NOMBRE,"nombre");
+            { tokens.add(new Token(yytext(), "PR_NOMBRE", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_NOMBRE,"nombre");
             } 
             // fall through
           case 58: break;
@@ -927,17 +942,17 @@ public class LexerConf implements java_cup.runtime.Scanner {
             // fall through
           case 59: break;
           case 24: 
-            { tokens.add(yytext(), "PR_ACUMULAR", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_ACUMULAR, "acumular");
+            { tokens.add(new Token(yytext(), "PR_ACUMULAR", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_ACUMULAR, "acumular");
             } 
             // fall through
           case 60: break;
           case 25: 
-            { tokens.add(yytext(), "PR_COLUMNAS", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_COLUMNAS, "columnas");
+            { tokens.add(new Token(yytext(), "PR_COLUMNAS", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_COLUMNAS, "columnas");
             } 
             // fall through
           case 61: break;
           case 26: 
-            { tokens.add(yytext(), "PR_PLANETAS_JUGADORES", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_PLANETAS_JUGADORES, "planetas");
+            { tokens.add(new Token(yytext(), "PR_PLANETAS_JUGADORES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_PLANETAS_JUGADORES, "planetas");
             } 
             // fall through
           case 62: break;
@@ -952,32 +967,32 @@ public class LexerConf implements java_cup.runtime.Scanner {
             // fall through
           case 64: break;
           case 29: 
-            { tokens.add(yytext(), "PR_MAPA_CIEGO", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_MAPA_CIEGO, "mapaCiego");
+            { tokens.add(new Token(yytext(), "PR_MAPA_CIEGO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_MAPA_CIEGO, "mapaCiego");
             } 
             // fall through
           case 65: break;
           case 30: 
-            { tokens.add(yytext(), "PR_PRODUCCION", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_PRODUCCION, "produccion");
+            { tokens.add(new Token(yytext(), "PR_PRODUCCION", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_PRODUCCION, "produccion");
             } 
             // fall through
           case 66: break;
           case 31: 
-            { tokens.add(yytext(), "PR_MOSTRAR_NAVES", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_MOSTRAR_NAVES, "mostrarNaves");
+            { tokens.add(new Token(yytext(), "PR_MOSTRAR_NAVES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_MOSTRAR_NAVES, "mostrarNaves");
             } 
             // fall through
           case 67: break;
           case 32: 
-            { tokens.add(yytext(), "PR_FINALIZACION", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_FINALIZACION, "finalizacion");
+            { tokens.add(new Token(yytext(), "PR_FINALIZACION", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_FINALIZACION, "finalizacion");
             } 
             // fall through
           case 68: break;
           case 33: 
-            { tokens.add(yytext(), "PR_PORCENTAJE_MUERTES", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_PORCENTAJE_MUERTES, "porcentajeMuertes");
+            { tokens.add(new Token(yytext(), "PR_PORCENTAJE_MUERTES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_PORCENTAJE_MUERTES, "porcentajeMuertes");
             } 
             // fall through
           case 69: break;
           case 34: 
-            { tokens.add(yytext(), "PR_CANTIDAD_PLANETAS_NEUTRALES", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_CANTIDAD_PLANETAS_NEUTRALES, "planetasNeutrales");
+            { tokens.add(new Token(yytext(), "PR_CANTIDAD_PLANETAS_NEUTRALES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_CANTIDAD_PLANETAS_NEUTRALES, "planetasNeutrales");
             } 
             // fall through
           case 70: break;
@@ -987,7 +1002,7 @@ public class LexerConf implements java_cup.runtime.Scanner {
             // fall through
           case 71: break;
           case 36: 
-            { tokens.add(yytext(), "PR_MOSTRAR_ESTADISTICAS", yyline, yycolumn);this.existenTokens = true; return symbol(sym.PR_MOSTRAR_ESTADISTICAS, "mostrarEstadisticas");
+            { tokens.add(new Token(yytext(), "PR_MOSTRAR_ESTADISTICAS", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_MOSTRAR_ESTADISTICAS, "mostrarEstadisticas");
             } 
             // fall through
           case 72: break;

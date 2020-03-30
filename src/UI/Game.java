@@ -5,6 +5,9 @@
  */
 package UI;
 
+import Analizadores.AnalizadorArchivoConfiguracion.LexerConf;
+import Analizadores.AnalizadorArchivoConfiguracion.ParserConf;
+import Analizadores.Objects.ErrorMessage;
 import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
@@ -12,7 +15,10 @@ import BackEnd.Utilities.Utilities;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -126,6 +133,16 @@ public class Game extends javax.swing.JFrame {
         GameResultTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        Lector = new javax.swing.JDialog();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        LectorTexto = new javax.swing.JTextArea();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        Errores = new javax.swing.JTable();
+        LectorColumn = new javax.swing.JLabel();
+        LectorLine = new javax.swing.JLabel();
         InformationPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         NamePlayerInTurn = new javax.swing.JLabel();
@@ -143,6 +160,7 @@ public class Game extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         BotonJuegoAlAzar = new javax.swing.JMenuItem();
         BotonJuegoPersonalizado = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -886,6 +904,116 @@ public class Game extends javax.swing.JFrame {
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
+        Lector.setSize(new java.awt.Dimension(1100, 440));
+
+        LectorTexto.setColumns(20);
+        LectorTexto.setRows(5);
+        LectorTexto.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                LectorTextoCaretUpdate(evt);
+            }
+        });
+        jScrollPane6.setViewportView(LectorTexto);
+
+        jButton2.setText("Crear Juego");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Leer Archivo");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Guardar Archivo");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        Errores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cadena", "Linea", "Columna", "Causa probale"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Errores.getTableHeader().setReorderingAllowed(false);
+        jScrollPane7.setViewportView(Errores);
+        if (Errores.getColumnModel().getColumnCount() > 0) {
+            Errores.getColumnModel().getColumn(0).setResizable(false);
+            Errores.getColumnModel().getColumn(0).setPreferredWidth(100);
+            Errores.getColumnModel().getColumn(1).setResizable(false);
+            Errores.getColumnModel().getColumn(1).setPreferredWidth(30);
+            Errores.getColumnModel().getColumn(2).setResizable(false);
+            Errores.getColumnModel().getColumn(2).setPreferredWidth(30);
+            Errores.getColumnModel().getColumn(3).setResizable(false);
+            Errores.getColumnModel().getColumn(3).setPreferredWidth(300);
+        }
+
+        LectorColumn.setText("Columna: 1");
+
+        LectorLine.setText("Linea: 1");
+
+        javax.swing.GroupLayout LectorLayout = new javax.swing.GroupLayout(Lector.getContentPane());
+        Lector.getContentPane().setLayout(LectorLayout);
+        LectorLayout.setHorizontalGroup(
+            LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LectorLayout.createSequentialGroup()
+                .addGroup(LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LectorLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(LectorLayout.createSequentialGroup()
+                                .addComponent(jButton4)
+                                .addGap(26, 26, 26)
+                                .addComponent(jButton6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(LectorLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(LectorColumn, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(LectorLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        LectorLayout.setVerticalGroup(
+            LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LectorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(LectorLayout.createSequentialGroup()
+                        .addComponent(LectorLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LectorColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(LectorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton6)
+                            .addComponent(jButton4))))
+                .addGap(13, 13, 13))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         InformationPanel.setBackground(new java.awt.Color(0, 0, 0));
@@ -1011,6 +1139,14 @@ public class Game extends javax.swing.JFrame {
             }
         });
         jMenu1.add(BotonJuegoPersonalizado);
+
+        jMenuItem4.setText("Abrir archivo de configuracion");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
@@ -1294,6 +1430,67 @@ public class Game extends javax.swing.JFrame {
         gameManager.reset(null, null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        LectorLine.setText("Linea: 1");
+        LectorColumn.setText("Columna: 1");
+        LectorTexto.setText("");
+        uiManager.cleanTable(Errores);
+        Lector.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(!LectorTexto.getText().isEmpty()){
+            LexerConf lexer = new LexerConf(new StringReader(LectorTexto.getText()));
+            lexer.analizar();//analiza lexicamente 
+            ParserConf parser = null;
+            try {
+                if(lexer.getErrores().isEmpty()){//si no hay errores lexicos entonces analiza sintacticamente
+                    parser = new ParserConf(new LexerConf(new StringReader(LectorTexto.getText())));
+                    parser.parse();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Hubo Errores Graves", "Error", JOptionPane.ERROR_MESSAGE);
+            }finally{
+                if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
+                    gameManager.verificarDatosJuego(lexer.getTokens());
+                }else{
+                    if(lexer.getErrores().isEmpty()){
+                        mostrarErrores(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
+                    }else{
+                        mostrarErrores(lexer.getErrores());//si hay errores lexicos los muestra
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        LectorTexto.setText(uiManager.openProject(LectorTexto.getText()));
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        uiManager.saveProyect(LectorTexto.getText());
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void LectorTextoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_LectorTextoCaretUpdate
+        String texto = LectorTexto.getText();
+        int posicion = LectorTexto.getCaretPosition();
+
+        int fila = 1;
+        int columna = 1;
+
+        try {
+            fila = LectorTexto.getLineOfOffset(posicion);
+            columna = posicion - LectorTexto.getLineStartOffset(fila);
+        } catch (BadLocationException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado con la posicion del carrete. ", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        columna+=1;
+        fila+=1;
+        LectorColumn.setText("Columna \n"+columna);
+        LectorLine.setText("Linea: \n"+fila);
+    }//GEN-LAST:event_LectorTextoCaretUpdate
+
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
         NamePlayerInTurn.setText(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName());
@@ -1378,6 +1575,10 @@ public class Game extends javax.swing.JFrame {
         }
     }
     
+    public void mostrarErrores(ArrayList<ErrorMessage> errores){
+        uiManager.doErrorTable(Errores, errores);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1422,6 +1623,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JMenuItem BotonJuegoAlAzar;
     private javax.swing.JMenuItem BotonJuegoPersonalizado;
     private javax.swing.JButton EndTurnButton;
+    private javax.swing.JTable Errores;
     private javax.swing.JDialog GameConfigurationA;
     private javax.swing.JCheckBox GameConfigurationAAcum;
     private javax.swing.JFormattedTextField GameConfigurationAAmount;
@@ -1458,6 +1660,10 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JTable GameResultTable;
     private javax.swing.JDialog GameResults;
     private javax.swing.JPanel InformationPanel;
+    private javax.swing.JDialog Lector;
+    private javax.swing.JLabel LectorColumn;
+    private javax.swing.JLabel LectorLine;
+    private javax.swing.JTextArea LectorTexto;
     private javax.swing.JLabel NamePlayerInTurn;
     private javax.swing.JButton PersonalizedPlayButton;
     private javax.swing.JButton PlayAButton;
@@ -1465,8 +1671,11 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JLabel StateLabel;
     private javax.swing.JLabel TurnLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -1499,6 +1708,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -1513,5 +1723,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,8 +5,9 @@
         <group>
             <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/Analizadores/AnalizadorArchivoConfiguracion/ParserConf.cup</file>
             <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/Analizadores/AnalizadorArchivoConfiguracion/LexerConf.flex</file>
-            <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/BackEnd/Objects/Map.java</file>
+            <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/Analizadores/Objects/ErrorMessage.java</file>
             <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/Analizadores/Objects/Token.java</file>
+            <file>file:/C:/Users/jose_/Documents/NetBeansProjects/Konquest/src/Analizadores/AnalizadorArchivoConfiguracion/LexerConf.java</file>
         </group>
     </open-files>
 </project-private>

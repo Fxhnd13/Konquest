@@ -348,7 +348,7 @@ public class ParserConf extends java_cup.runtime.lr_parser {
                 case "#35": message=("No se esperaba un tipo de jugador"); break;
                 default: message=("Causa desconocida"); break;
             }
-            ErrorMessage error = new ErrorMessage(linea, columna, cadena, message);
+            errores.add(new ErrorMessage(linea, columna, cadena, message));
         }
         
 
