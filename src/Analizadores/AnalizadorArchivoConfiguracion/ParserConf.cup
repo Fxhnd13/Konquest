@@ -6,6 +6,8 @@ import BackEnd.Objects.Player;
 import BackEnd.Objects.Planet;
 import java.util.ArrayList;
 import Analizadores.AnalizadorArchivoConfiguracion.LexerConf;
+import Analizadores.Objects.Atributo;
+import Analizadores.Objects.ErrorMessage;
 
 action code {:
     
@@ -67,6 +69,12 @@ action code {:
 
 parser code {:
 
+        private ArrayList<ErrorMessage> errores = new ArrayList<ErrorMessage>();
+
+        public ArrayList<ErrorMessage> getErrores(){
+            return errores;
+        }
+        
         public ParserConf(LexerConf lex) { 
             super(lex);   
 	}
@@ -82,11 +90,9 @@ parser code {:
         public void syntax_error(Symbol s){
             String message = "";
             StringBuilder m = new StringBuilder("Error:");
-            m.append(" Con: \""+s.value+"\"");
-            if(s.left >= 0){
-                m.append(" en linea: "+(s.left+1));
-                if(s.right >= 0) m.append(", columna: "+(s.right+1));
-            }
+            String cadena = s.value.toString();
+            int linea = (s.left+1);
+            int columna = (s.right+1);
             switch(s.toString()){
                 case "#1" : message=("Con error xd"); break;
                 case "#2" : message=("No se espraba la palabra reservada nombres"); break;
@@ -112,7 +118,7 @@ parser code {:
                 case "#22": message=("No se esperaba una llave abierta"); break;
                 case "#23": message=("No se esperaba una llave cerrada"); break;
                 case "#24": message=("No se esperaba un corchete abierto"); break;
-                case "#25": message=("No se esperaba un  corchete cerrado"); break;
+                case "#25": message=("No se esperaba un corchete cerrado"); break;
                 case "#26": message=("No se esperaba los dos puntos"); break;
                 case "#27": message=("No se esperaba una coma"); break;
                 case "#28": message=("No se esperaba una comilla"); break;
@@ -125,8 +131,7 @@ parser code {:
                 case "#35": message=("No se esperaba un tipo de jugador"); break;
                 default: message=("Causa desconocida"); break;
             }
-            m.append(" :::::: Cause: "+message);
-            System.err.println(m);
+            ErrorMessage error = new ErrorMessage(linea, columna, cadena, message);
         }
         
 :}
