@@ -1,0 +1,327 @@
+package Analizadores.AnalizadorArchivoConfiguracion;
+
+import java_cup.runtime.Symbol;
+import BackEnd.Objects.Map;
+import BackEnd.Objects.Player;
+import BackEnd.Objects.Planet;
+import java.util.ArrayList;
+import Analizadores.AnalizadorArchivoConfiguracion.LexerConf;
+
+action code {:
+    
+    ArrayList<Atributo> mapa = new ArrayList<Atributo>();
+    ArrayList<Atributo> jugadores = new ArrayList<Atributo>();
+    ArrayList<Atributo> planetas = new ArrayList<Atributo>();
+
+    String getValorPorTipo(String tipo, ArrayList<Atributo> objetos){
+        String valor = null;
+        for (Atributo atributo : objetos) {
+            if(atributo.getTipo().equals(tipo))valor = atributo.getValor();
+        }
+        return valor;
+    }
+
+    void aggAtributoMapa(String tipo, String atributo){
+        mapa.add(new Atributo(tipo, atributo));
+    }
+
+    void aggAtributoJugador(String tipo, String atributo){
+        jugadores.add(new Atributo(tipo, atributo));
+    }
+
+    void aggAtributoPlaneta(String tipo, String atributo){
+        planetas.add(new Atributo(tipo, atributo));
+    }
+    
+    boolean atributoMapaRepetido(String tipo){
+        boolean valor = false;
+        for(Atributo atributo: mapa){
+            if(tipo.equals(atributo.getTipo())){
+                valor = true;
+            }
+        }
+        return valor;
+    }
+    
+    boolean nombreJugadorRepetido(String nombre){
+        boolean valor = false;
+        if(!jugadores.isEmpty()){
+            for(Atributo atributo: jugadores){
+                if(atributo.getTipo().equals(nombre))valor = true;
+            }
+        }
+        return valor;
+    }
+    
+    boolean nombrePlanetaRepetido(String nombre){
+        boolean valor = false;
+        if(!planetas.isEmpty()){
+            for(Atributo atributo: planetas){
+                if(atributo.getTipo().equals(nombre))valor = true;
+            }
+        }
+        return valor;
+    }
+
+:}
+
+parser code {:
+
+        public ParserConf(LexerConf lex) { 
+            super(lex);   
+	}
+        
+        public void setAccion(String tipo, String mensaje, String accion){
+            System.out.println(tipo+"         "+mensaje);
+        }
+
+        public void unrecovered_syntax_error(Symbol cur_token){
+            System.err.println("Couldn't repair and continue parse "+cur_token.value);
+        }
+
+        public void syntax_error(Symbol s){
+            String message = "";
+            StringBuilder m = new StringBuilder("Error:");
+            m.append(" Con: \""+s.value+"\"");
+            if(s.left >= 0){
+                m.append(" en linea: "+(s.left+1));
+                if(s.right >= 0) m.append(", columna: "+(s.right+1));
+            }
+            switch(s.toString()){
+                case "#1" : message=("Con error xd"); break;
+                case "#2" : message=("No se espraba la palabra reservada nombres"); break;
+                case "#3": message=("No se abrio llaves en la estructura incial."); break;
+                case "#4": message=("No se esperaba la palabra reservada Planetas Neutrales"); break;
+                case "#5": message= ("No se esperaba la palabra reseravada jugadores"); break;
+                case "#6" : message=("No se esperaba la palabra resrvada planetas"); break;
+                case "#7" : message=("No se esperaba la palabra rservada id"); break;
+                case "#8" : message=("No se esperaba la palabra reservada tamaño"); break;
+                case "#9": message=("No se esperaba la palabra reservada Filas"); break;
+                case "#10": message=("No se esperba la palabra reservada columnas"); break;
+                case "#11": message=("No se esperaba la palabra reservada al azar"); break;
+                case "#12": message=("No se esperaba la palabra reservada cantidad planetas neutrales"); break;
+                case "#13": message=("No se esperaba la palabra reservada mapaCiego"); break;
+                case "#14": message=("No se esperaba la palabra resrvada acumular"); break;
+                case "#15": message=("No se esperaba la palabra reservada neutrales"); break;
+                case "#16": message=("No se esperaba la palabra reservada finalizacion"); break;
+                case "#17": message=("No se esperaba la palabra reservada naves"); break;
+                case "#18": message=("No se esperaba la palabra reservada produccion");break;
+                case "#19": message=("No se esperaba la palabra reservada porcentaje de muertes"); break;
+                case "#20": message=("No se esperaba la palabra reservada planetas"); break;
+                case "#21": message=("No se esperaba la palabra rservada tipo"); break;
+                case "#22": message=("No se esperaba una llave abierta"); break;
+                case "#23": message=("No se esperaba una llave cerrada"); break;
+                case "#24": message=("No se esperaba un corchete abierto"); break;
+                case "#25": message=("No se esperaba un  corchete cerrado"); break;
+                case "#26": message=("No se esperaba los dos puntos"); break;
+                case "#27": message=("No se esperaba una coma"); break;
+                case "#28": message=("No se esperaba una comilla"); break;
+                case "#29": message=("No se esperaba la palabra reservada mostrarNaves"); break;
+                case "#30": message=("No se esperaba la palabra reservada mostrarEstadisticas"); break;
+                case "#31": message=("No se esperaba un valor booleano"); break;
+                case "#32": message=("No se esperaba un id"); break;
+                case "#33": message=("No se esperaba un entero"); break;
+                case "#34": message=("No se esperaba un double"); break;
+                case "#35": message=("No se esperaba un tipo de jugador"); break;
+                default: message=("Causa desconocida"); break;
+            }
+            m.append(" :::::: Cause: "+message);
+            System.err.println(m);
+        }
+        
+:}
+
+/* Terminals (tokens returned by the scanner). */
+terminal            PR_NOMBRE, PR_MAPA, PR_PLANETAS_NEUTRALES, PR_JUGADORES, PR_PLANETAS, PR_ID, PR_SIZE, PR_FILAS, PR_COLUMNAS, PR_AZAR, PR_CANTIDAD_PLANETAS_NEUTRALES,
+                    PR_MAPA_CIEGO, PR_ACUMULAR, PR_NEUTRALES, PR_FINALIZACION, PR_NAVES, PR_PRODUCCION, PR_PORCENTAJE_MUERTES, PR_PLANETAS_JUGADORES,
+                    PR_TIPO, LLAVE_A, LLAVE_C, CORCHETE_A, CORCHETE_C, ASIGNACION,SEPARADOR, COMILLA, PR_MOSTRAR_NAVES, PR_MOSTRAR_ESTADISTICAS;
+terminal String     BOOLEAN, ID, ENTERO, DOUBLE, TIPO;
+
+non terminal       So, inicio, strInicioPrima, dclMapa, strMapa, strSize, strSizePrima, strNeutralesConf, strNeutralesPrima, strMapaPrima, 
+                   dclJugadores, jugadores, strJugador, cadenas, cadenaPrima, strJugadorPrima, listJugadores, dclPlanetas, planetas, strPlaneta,
+                   strPlanetaPrima, listPlanetas, dclPlanetasNeutrales;
+
+precedence left SEPARADOR;
+    
+/* The grammar */
+start with So;
+
+So ::=                  LLAVE_A inicio
+                        |error PR_MAPA  strMapa
+                        |error PR_JUGADORES  jugadores
+                        |error PR_PLANETAS  planetas
+                        |error PR_PLANETAS_NEUTRALES planetas
+                        ;
+
+inicio ::=              dclMapa strInicioPrima
+                        |dclJugadores strInicioPrima
+                        |dclPlanetas strInicioPrima
+                        |dclPlanetasNeutrales strInicioPrima
+                        |error CORCHETE_C strInicioPrima
+                        |error LLAVE_C strInicioPrima
+                        ;
+
+strInicioPrima ::=      SEPARADOR inicio
+                        |LLAVE_C
+                        ;
+
+dclMapa ::=             PR_MAPA ASIGNACION LLAVE_A strMapa
+                        |error SEPARADOR strMapa
+                        ;
+
+strMapa ::=             PR_ID ASIGNACION COMILLA ID:e COMILLA strMapaPrima {: 
+                            if(atributoMapaRepetido("id")){
+                                System.err.println("Error ID strMapa");
+                            }else{
+                                aggAtributoMapa("id", e); 
+                            }
+                        :}
+                        |PR_AZAR ASIGNACION BOOLEAN:e strMapaPrima {: 
+                            if(atributoMapaRepetido("alAzar")){
+                                System.err.println("Error AZAR strMapa");
+                            }else{
+                                aggAtributoMapa("alAzar", e); 
+                            }
+                        :}
+                        |PR_CANTIDAD_PLANETAS_NEUTRALES ASIGNACION ENTERO:e strMapaPrima {: 
+                            if(atributoMapaRepetido("planetasNeutrales")){
+                                System.err.println("Error CANTIDAD PLANETAS NEUTRALES strMapa");
+                            }else{
+                                aggAtributoMapa("planetasNeutrales", e); 
+                            }
+                        :}
+                        |PR_MAPA_CIEGO ASIGNACION BOOLEAN:e strMapaPrima{: 
+                            if(atributoMapaRepetido("mapaCiego")){
+                                System.err.println("Error  MAPA CIEGO strMapa");
+                            }else{
+                                aggAtributoMapa("mapaCiego", e); 
+                            }
+                        :}
+                        |PR_ACUMULAR ASIGNACION BOOLEAN:e strMapaPrima {: 
+                            if(atributoMapaRepetido("acumular")){
+                                System.err.println("Error ACUMULAR strMapa");
+                            }else{
+                                aggAtributoMapa("acumular", e); 
+                            }
+                        :}
+                        |PR_FINALIZACION ASIGNACION ENTERO:e strMapaPrima {: 
+                            if(atributoMapaRepetido("finalizacion")){
+                               System.err.println("Error FINALIZACION strMapa");
+                            }else{
+                                aggAtributoMapa("finalizacion", e); 
+                            }
+                        :}
+                        |PR_NEUTRALES ASIGNACION LLAVE_A strNeutralesConf strMapaPrima
+                        |PR_SIZE ASIGNACION LLAVE_A strSize strMapaPrima
+                        ;
+
+strSize ::=             PR_FILAS ASIGNACION ENTERO:e strSizePrima {: 
+                            if(atributoMapaRepetido("filas")){
+                                System.err.println("Error FILAS strMapa");
+                            }else{
+                                aggAtributoMapa("filas", e); 
+                            }
+                        :}
+                        |PR_COLUMNAS ASIGNACION ENTERO:e strSizePrima{: 
+                            if(atributoMapaRepetido("columnas")){
+                                System.err.println("Error COLUMNAS strMapa");
+                            }else{
+                                aggAtributoMapa("columnas", e); 
+                            }
+                        :}
+                        ;
+
+strSizePrima ::=        SEPARADOR strSize
+                        |LLAVE_C 
+                        ;                                            
+
+strNeutralesConf ::=    PR_MOSTRAR_NAVES ASIGNACION BOOLEAN:e strNeutralesPrima{: 
+                            if(atributoMapaRepetido("mostrarNaves")){
+                                System.err.println("Error MOSTRAR NAVES strMapa");
+                            }else{
+                                aggAtributoMapa("mostrarNaves", e); 
+                            }
+                        :}
+                        |PR_MOSTRAR_ESTADISTICAS ASIGNACION BOOLEAN:e strNeutralesPrima {: 
+                            if(atributoMapaRepetido("mostrarEstadisticas")){
+                               System.err.println("Error MOSTRAR ESTADISTICAS strMapa");
+                            }else{
+                                aggAtributoMapa("mostrarEstadisticas", e); 
+                            }
+                        :}
+                        |PR_PRODUCCION ASIGNACION ENTERO:e strNeutralesPrima {: 
+                            if(atributoMapaRepetido("produccion")){
+                                System.err.println("Error PRODUCCION PREDETERMINADA strMapa");
+                            }else{
+                                aggAtributoMapa("produccion", e); 
+                            }
+                        :}
+                        ;
+
+strNeutralesPrima ::=   SEPARADOR strNeutralesConf
+                        |LLAVE_C
+                        ;                     
+
+strMapaPrima ::=        SEPARADOR strMapa
+                        |LLAVE_C 
+                        ;
+
+dclJugadores ::=        PR_JUGADORES ASIGNACION CORCHETE_A jugadores 
+                        |error SEPARADOR jugadores
+                        |error LLAVE_C strJugador
+                        ;
+
+jugadores ::=           LLAVE_A strJugador listJugadores;
+
+strJugador ::=          PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA strJugadorPrima {: 
+                            if(nombreJugadorRepetido(e)){
+                                System.err.println("Error SE REPITIO EL NOMBRE strJugador");
+                            }else{
+                                aggAtributoJugador("nombre", e); 
+                            }
+                        :}
+                        |PR_PLANETAS_JUGADORES ASIGNACION CORCHETE_A cadenas strJugadorPrima 
+                        |PR_TIPO ASIGNACION TIPO:e strJugadorPrima
+                        ;
+
+cadenas ::=             COMILLA ID:e COMILLA cadenaPrima;
+
+cadenaPrima ::=         SEPARADOR cadenas
+                        |CORCHETE_C 
+                        ;
+
+strJugadorPrima ::=     SEPARADOR strJugador
+                        |LLAVE_C 
+                        ;
+
+listJugadores ::=       SEPARADOR jugadores
+                        |CORCHETE_C 
+                        ;
+
+dclPlanetas ::=         PR_PLANETAS ASIGNACION CORCHETE_A planetas;
+
+planetas ::=            LLAVE_A strPlaneta listPlanetas;
+
+strPlaneta ::=          PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA strPlanetaPrima {: 
+                            if(nombrePlanetaRepetido(e)){
+                                System.err.println("Error NOMBRE REPETIDO strPlaneta");
+                            }else{
+                                aggAtributoPlaneta("nombre", e);
+                            }
+                        :}
+                        |PR_NAVES ASIGNACION ENTERO:e strPlanetaPrima
+                        |PR_PRODUCCION ASIGNACION ENTERO:e strPlanetaPrima
+                        |PR_PORCENTAJE_MUERTES ASIGNACION DOUBLE:e strPlanetaPrima
+                        |error LLAVE_A strPlaneta
+                        |error SEPARADOR strPlaneta
+                        ;
+
+strPlanetaPrima ::=      SEPARADOR strPlaneta
+                        |LLAVE_C 
+                        ;
+                    
+listPlanetas ::=        SEPARADOR planetas
+                        |CORCHETE_C 
+                        ;
+
+dclPlanetasNeutrales ::= PR_PLANETAS_NEUTRALES ASIGNACION CORCHETE_A planetas;
