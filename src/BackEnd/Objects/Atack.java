@@ -25,6 +25,9 @@ public class Atack {
         this.porcentajeDeMuerte = porcentaje;
     }
 
+    public Atack() {
+    }
+
     public double getPorcentajeDeMuerte() {
         return porcentajeDeMuerte;
     }

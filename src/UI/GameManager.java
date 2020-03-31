@@ -53,6 +53,15 @@ public class GameManager {
     private ArrayList<Return> returns = new ArrayList<Return>();
     private ArrayList<String> mensajes = new ArrayList<String>();
 
+    public void realizarAccionesDeTurno(JTextArea bitacora, JPanel spacePanel){
+        for (Action action : actions.getAccionesRealizadas()) {
+            if(action.getTurn()==turno){
+                actions.getAccionesARealizar().add(action);
+            }
+        }
+        terminarTurno(bitacora, spacePanel);
+    }
+    
     public void cambiarJugador(JTextArea bitacora, JPanel spacePanel) {
         actions.getAccionesARealizar().add(new Action(turno, 0, null, players.get(jugadorEnTurno).getName()));
         jugadorEnTurno++;
@@ -173,9 +182,7 @@ public class GameManager {
                 atack.setVictoria(true);
                 destino.setConqueror(salida.getConqueror());
                 destino.setShips(cantidadSobranteDefensor + cantidadSobranteAtacante);
-                if (!salida.getConqueror().equals("Nadie")) {
-                    Utilities.getPlayer(salida, players).setPlanetasConquistados(Utilities.getPlayer(salida, players).getPlanetasConquistados() + 1);
-                }
+                Utilities.getPlayer(salida, players).setPlanetasConquistados(Utilities.getPlayer(salida, players).getPlanetasConquistados() + 1);
                 if (!destino.getConqueror().equals("Nadie")) {
                     Utilities.getPlayer(destino, players).setPlanetasConquistados(Utilities.getPlayer(destino, players).getPlanetasConquistados() - 1);
                 }
@@ -217,11 +224,13 @@ public class GameManager {
     }
 
     public void cancelAtack(JLabel label, JButton buton) {
-        this.state = 0;
-        this.exitCell = null;
-        this.destinyCell = null;
-        label.setText("Planeando...");
-        buton.setText("Atacar");
+        if(mode == 0){
+            this.state = 0;
+            this.exitCell = null;
+            this.destinyCell = null;
+            label.setText("Planeando...");
+            buton.setText("Atacar");
+        }
     }
 
     public void showDistance(JLabel label, JButton buton) {
@@ -232,14 +241,17 @@ public class GameManager {
 
     public void doPlayers(JTable tablePlayers) {
         GameUtilities.doPlayers(tablePlayers, players, configuration);
+        players = new ArrayList<Player>(configuration.getPlayers());
     }
 
     public void doPlanets(JTable tablePlanets, int filas, int columnas) {
         GameUtilities.doPlanets(tablePlanets, filas, columnas, players, planets, configuration);
+        planets = new ArrayList<Planet>(configuration.getPlanets());
     }
 
     void doPlanets(int cantidad, int filas, int columnas) {
         GameUtilities.doPlanets(cantidad, filas, columnas, players, planets, configuration);
+        planets = new ArrayList<Planet>(configuration.getPlanets());
     }
 
     public void reset(JPanel spacePanel, JTextArea bitacora) {
@@ -278,116 +290,122 @@ public class GameManager {
         ArrayList<Token> tokensJugadores = GameUtilities.getTokens(tokens, 3);
         ArrayList<Token> tokensPlanetasNeutrales = GameUtilities.getTokens(tokens, 4);
         for (int i = 0; i < tokensMapa.size(); i++) {
-            switch(tokens.get(i).getType()){
-                case "PR_ID":{
+            switch (tokens.get(i).getType()) {
+                case "PR_ID": {
                     i++;
                     configuration.getMap().setId(tokens.get(i).getLexem());
                     break;
                 }
-                case "PR_FILAS":{
+                case "PR_FILAS": {
                     i++;
                     configuration.getMap().setFilas(Integer.parseInt(tokens.get(i).getLexem()));
                     break;
                 }
-                case "PR_COLUMNAS":{
+                case "PR_COLUMNAS": {
                     i++;
                     configuration.getMap().setColumnas(Integer.parseInt(tokens.get(i).getLexem()));
                     break;
                 }
-                case "PR_AZAR":{
+                case "PR_AZAR": {
                     i++;
-                    if(tokens.get(i).getLexem().equals("true"))this.alAzar = true;
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        this.alAzar = true;
+                    }
                     break;
                 }
-                case "PR_CANTIDAD_PLANETAS_NEUTRALES":{
+                case "PR_CANTIDAD_PLANETAS_NEUTRALES": {
                     i++;
                     configuration.getMap().setPlanetasNeutrales(Integer.parseInt(tokens.get(i).getLexem()));
                     break;
                 }
-                case "PR_MAPA_CIEGO":{
+                case "PR_MAPA_CIEGO": {
                     i++;
-                    if(tokens.get(i).getLexem().equals("true")) configuration.getMap().setMapaCiego(true);
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().setMapaCiego(true);
+                    }
                     break;
                 }
-                case "PR_ACUMULAR":{
+                case "PR_ACUMULAR": {
                     i++;
-                    if(tokens.get(i).getLexem().equals("true")) configuration.getMap().setMapaCiego(true);
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().setMapaCiego(true);
+                    }
                     break;
                 }
-                case "PR_MOSTRAR_NAVES":{
+                case "PR_MOSTRAR_NAVES": {
                     i++;
-                    if(tokens.get(i).getLexem().equals("true")){
+                    if (tokens.get(i).getLexem().equals("true")) {
                         configuration.getMap().getNeutrales().setShowShips(true);
-                    }else{
+                    } else {
                         configuration.getMap().getNeutrales().setShowShips(false);
                     }
                     break;
                 }
-                case "PR_MOSTRAR_ESTADISTICAS":{
+                case "PR_MOSTRAR_ESTADISTICAS": {
                     i++;
-                    if(tokens.get(i).getLexem().equals("true")){
+                    if (tokens.get(i).getLexem().equals("true")) {
                         configuration.getMap().getNeutrales().setShowStadistics(true);
-                    }else{
+                    } else {
                         configuration.getMap().getNeutrales().setShowStadistics(false);
                     }
                     break;
                 }
-                case "PR_PRODUCCION":{
+                case "PR_PRODUCCION": {
                     i++;
                     configuration.getMap().getNeutrales().setProduction(Integer.parseInt(tokens.get(i).getLexem()));
                     break;
                 }
-                case "PR_FINALIZACION":{
+                case "PR_FINALIZACION": {
                     i++;
                     configuration.getMap().setFinalization(Integer.parseInt(tokens.get(i).getLexem()));
                     break;
                 }
             }
         }
-        if(!GameUtilities.verificarValidezMapa(configuration.getMap(), this.alAzar)){
-            Token token = tokens.get(tokens.size()-1);
+        if (!GameUtilities.verificarValidezMapa(configuration.getMap(), this.alAzar)) {
+            Token token = tokens.get(tokens.size() - 1);
             errores.add(new ErrorMessage(token.getLine(), token.getColumn(), token.getLexem(), "Faltan Datos."));
         }
         for (int i = 0; i < tokensJugadores.size(); i++) {
-            switch(tokensJugadores.get(i).getType()){
-                case "LLAVE_A":{
+            switch (tokensJugadores.get(i).getType()) {
+                case "LLAVE_A": {
                     Player player = new Player();
                     player.setFirsToken(tokensJugadores.get(i));
                     i++;
-                    while(!tokensJugadores.get(i).getType().equals("LLAVE_C")){
-                        switch(tokensJugadores.get(i).getType()){
-                            case "PR_NOMBRE":{
+                    while (!tokensJugadores.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensJugadores.get(i).getType()) {
+                            case "PR_NOMBRE": {
                                 i++;
-                                if(player.getName()==null){
+                                if (player.getName() == null) {
                                     player.setName(tokensJugadores.get(i).getLexem());
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
                                 break;
                             }
                             case "PR_TIPO": {
                                 i++;
-                                if(player.getType()==null){
+                                if (player.getType() == null) {
                                     player.setType(tokensJugadores.get(i).getLexem());
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el tipo."));
                                 }
                                 break;
                             }
-                            case "CORCHETE_A":{
+                            case "CORCHETE_A": {
                                 i++;
-                                while(i<tokensJugadores.size()&&!tokensJugadores.get(i).getType().equals("CORCHETE_C")){
+                                while (i < tokensJugadores.size() && !tokensJugadores.get(i).getType().equals("CORCHETE_C")) {
                                     player.getPlanetas().add(tokensJugadores.get(i).getLexem());
                                     i++;
                                 }
                                 break;
                             }
                         }
-                    i++;
+                        i++;
                     }
-                    if(!player.isValid()){
+                    if (!player.isValid()) {
                         errores.add(new ErrorMessage(player.getFirsToken().getLine(), player.getFirsToken().getColumn(), player.getFirsToken().getLexem(), "Faltan datos en la estructura del jugador."));
-                    }else{
+                    } else {
                         this.configuration.getPlayers().add(player);
                     }
                     break;
@@ -395,57 +413,57 @@ public class GameManager {
             }
         }
         for (int i = 0; i < tokensPlanetas.size(); i++) {
-            switch(tokensPlanetas.get(i).getType()){
-                case "LLAVE_A":{
+            switch (tokensPlanetas.get(i).getType()) {
+                case "LLAVE_A": {
                     Planet planeta = new Planet();
                     planeta.setFirstToken(tokensPlanetas.get(i));
                     i++;
-                    while(!tokensPlanetas.get(i).getType().equals("LLAVE_C")){
-                        switch(tokensPlanetas.get(i).getType()){
-                            case "PR_NOMBRE":{
+                    while (!tokensPlanetas.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensPlanetas.get(i).getType()) {
+                            case "PR_NOMBRE": {
                                 i++;
-                                if(planeta.getName()==null){
+                                if (planeta.getName() == null) {
                                     planeta.setName(tokensPlanetas.get(i).getLexem());
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
                                 break;
                             }
                             case "PR_PORCENTAJE_MUERTES": {
                                 i++;
-                                if(planeta.getDeathPercentage()==-1){
+                                if (planeta.getDeathPercentage() == -1) {
                                     planeta.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el porcentaje de muertes."));
                                 }
                                 break;
                             }
-                            case "PR_PRODUCCION":{
+                            case "PR_PRODUCCION": {
                                 i++;
-                                if(planeta.getProduction()==-1){
+                                if (planeta.getProduction() == -1) {
                                     planeta.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para la produccion."));
                                 }
                                 break;
                             }
-                            case "PR_NAVES":{
+                            case "PR_NAVES": {
                                 i++;
-                                if(planeta.getShips()==-1){
+                                if (planeta.getShips() == -1) {
                                     planeta.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para las naves."));
                                 }
                             }
                         }
-                    i++;
+                        i++;
                     }
-                    if(!planeta.isValid()){
+                    if (!planeta.isValid()) {
                         errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta."));
-                    }else{
-                        if(planeta.getProduction()==-1){
+                    } else {
+                        if (planeta.getProduction() == -1) {
                             errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta."));
-                        }else{
+                        } else {
                             this.configuration.getPlanets().add(planeta);
                         }
                     }
@@ -454,54 +472,54 @@ public class GameManager {
             }
         }
         for (int i = 0; i < tokensPlanetasNeutrales.size(); i++) {
-            switch(tokensPlanetasNeutrales.get(i).getType()){
-                case "LLAVE_A":{
+            switch (tokensPlanetasNeutrales.get(i).getType()) {
+                case "LLAVE_A": {
                     Planet planeta = new Planet();
                     planeta.setFirstToken(tokensPlanetasNeutrales.get(i));
                     i++;
-                    while(!tokensPlanetasNeutrales.get(i).getType().equals("LLAVE_C")){
-                        switch(tokensPlanetasNeutrales.get(i).getType()){
-                            case "PR_NOMBRE":{
+                    while (!tokensPlanetasNeutrales.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensPlanetasNeutrales.get(i).getType()) {
+                            case "PR_NOMBRE": {
                                 i++;
-                                if(planeta.getName()==null){
+                                if (planeta.getName() == null) {
                                     planeta.setName(tokensPlanetasNeutrales.get(i).getLexem());
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetasNeutrales.get(i).getLine(), tokensPlanetasNeutrales.get(i).getColumn(), tokensPlanetasNeutrales.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
                                 break;
                             }
                             case "PR_PORCENTAJE_MUERTES": {
                                 i++;
-                                if(planeta.getDeathPercentage()==-1){
+                                if (planeta.getDeathPercentage() == -1) {
                                     planeta.setDeathPercentage(Double.parseDouble(tokensPlanetasNeutrales.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetasNeutrales.get(i).getLine(), tokensPlanetasNeutrales.get(i).getColumn(), tokensPlanetasNeutrales.get(i).getLexem(), "Ya existe un valor declarado para el porcentaje de muertes."));
                                 }
                                 break;
                             }
-                            case "PR_PRODUCCION":{
+                            case "PR_PRODUCCION": {
                                 i++;
-                                if(planeta.getProduction()==-1){
+                                if (planeta.getProduction() == -1) {
                                     planeta.setProduction(Integer.parseInt(tokensPlanetasNeutrales.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetasNeutrales.get(i).getLine(), tokensPlanetasNeutrales.get(i).getColumn(), tokensPlanetasNeutrales.get(i).getLexem(), "Ya existe un valor declarado para la produccion."));
                                 }
                                 break;
                             }
-                            case "PR_NAVES":{
+                            case "PR_NAVES": {
                                 i++;
-                                if(planeta.getShips()==-1){
+                                if (planeta.getShips() == -1) {
                                     planeta.setShips(Integer.parseInt(tokensPlanetasNeutrales.get(i).getLexem()));
-                                }else{
+                                } else {
                                     errores.add(new ErrorMessage(tokensPlanetasNeutrales.get(i).getLine(), tokensPlanetasNeutrales.get(i).getColumn(), tokensPlanetasNeutrales.get(i).getLexem(), "Ya existe un valor declarado para las naves."));
                                 }
                             }
                         }
-                    i++;
+                        i++;
                     }
-                    if(!planeta.isValid()){
+                    if (!planeta.isValid()) {
                         errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta neutral."));
-                    }else{
+                    } else {
                         this.configuration.getPlanets().add(planeta);
                     }
                     break;
@@ -509,12 +527,266 @@ public class GameManager {
             }
         }
         this.configuration.doLastConfigurations();
-        this.players = this.configuration.getPlayers();
-        if(alAzar){
+        players = new ArrayList<Player>(configuration.getPlayers());
+        if (alAzar) {
             this.doPlanets(configuration.getMap().getPlanetasNeutrales(), configuration.getMap().getFilas(), configuration.getMap().getColumnas());
-        }else{
-            this.planets = this.configuration.getPlanets();
+        } else {
+            planets = new ArrayList<Planet>(configuration.getPlanets());
         }
+    }
+
+    void verificarDatosJuegoRepeticion(ArrayList<Token> tokens, ArrayList<ErrorMessage> errores, int opcion) {
+        ArrayList<Token> tokensMapa = GameUtilities.getTokens(tokens, 1);
+        ArrayList<Token> tokensPlanetas = GameUtilities.getTokens(tokens, 2);
+        ArrayList<Token> tokensJugadores = GameUtilities.getTokens(tokens, 3);
+        ArrayList<Token> tokensAcciones = GameUtilities.getTokens(tokens, 5);
+        for (int i = 0; i < tokensMapa.size(); i++) {
+            switch (tokens.get(i).getType()) {
+                case "PR_TURNO": {
+                    i++;
+                    this.turno = Integer.parseInt(tokens.get(i).getLexem());
+                    break;
+                }
+                case "PR_ID": {
+                    i++;
+                    configuration.getMap().setId(tokens.get(i).getLexem());
+                    break;
+                }
+                case "PR_FILAS": {
+                    i++;
+                    configuration.getMap().setFilas(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_COLUMNAS": {
+                    i++;
+                    configuration.getMap().setColumnas(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+                case "PR_MAPA_CIEGO": {
+                    i++;
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().setMapaCiego(true);
+                    }
+                    break;
+                }
+                case "PR_ACUMULAR": {
+                    i++;
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().setMapaCiego(true);
+                    }
+                    break;
+                }
+                case "PR_MOSTRAR_NAVES": {
+                    i++;
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().getNeutrales().setShowShips(true);
+                    } else {
+                        configuration.getMap().getNeutrales().setShowShips(false);
+                    }
+                    break;
+                }
+                case "PR_MOSTRAR_ESTADISTICAS": {
+                    i++;
+                    if (tokens.get(i).getLexem().equals("true")) {
+                        configuration.getMap().getNeutrales().setShowStadistics(true);
+                    } else {
+                        configuration.getMap().getNeutrales().setShowStadistics(false);
+                    }
+                    break;
+                }
+                case "PR_FINALIZACION": {
+                    i++;
+                    configuration.getMap().setFinalization(Integer.parseInt(tokens.get(i).getLexem()));
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < tokensJugadores.size(); i++) {
+            switch (tokensJugadores.get(i).getType()) {
+                case "LLAVE_A": {
+                    Player player = new Player();
+                    player.setFirsToken(tokensJugadores.get(i));
+                    i++;
+                    while (!tokensJugadores.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensJugadores.get(i).getType()) {
+                            case "PR_NOMBRE": {
+                                i++;
+                                if (player.getName() == null) {
+                                    player.setName(tokensJugadores.get(i).getLexem());
+                                } else {
+                                    errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
+                                }
+                                break;
+                            }
+                        }
+                        i++;
+                    }
+                    this.configuration.getPlayers().add(player);
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < tokensPlanetas.size(); i++) {
+            switch (tokensPlanetas.get(i).getType()) {
+                case "LLAVE_A": {
+                    Planet planeta = new Planet();
+                    planeta.setFirstToken(tokensPlanetas.get(i));
+                    i++;
+                    while (!tokensPlanetas.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensPlanetas.get(i).getType()) {
+                            case "PR_NOMBRE": {
+                                i++;
+                                if (planeta.getName() == null) {
+                                    planeta.setName(tokensPlanetas.get(i).getLexem());
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
+                                }
+                                break;
+                            }
+                            case "PR_PORCENTAJE_MUERTES": {
+                                i++;
+                                if (planeta.getDeathPercentage() == -1) {
+                                    planeta.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el porcentaje de muertes."));
+                                }
+                                break;
+                            }
+                            case "PR_PRODUCCION": {
+                                i++;
+                                if (planeta.getProduction() == -1) {
+                                    planeta.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para la produccion."));
+                                }
+                                break;
+                            }
+                            case "PR_NAVES": {
+                                i++;
+                                if (planeta.getShips() == -1) {
+                                    planeta.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para las naves."));
+                                }
+                                break;
+                            }
+                            case "PR_CONQUISTADOR": {
+                                i++;
+                                if (planeta.getConqueror() == null) {
+                                    planeta.setConqueror(tokensPlanetas.get(i).getLexem());
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para el conquistador del planeta."));
+                                }
+                                break;
+                            }
+                            case "PR_POSICION_X": {
+                                i++;
+                                if (planeta.getPositionX() == -1) {
+                                    planeta.setPositionX(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para la posicion x"));
+                                }
+                                break;
+                            }
+                            case "PR_POSICION_Y": {
+                                i++;
+                                if (planeta.getPositionY() == -1) {
+                                    planeta.setPositionY(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para la posicion y"));
+                                }
+                                break;
+                            }
+                        }
+                        i++;
+                    }
+                    if (!planeta.isValid()) {
+                        errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta."));
+                    } else {
+                        this.configuration.getPlanets().add(planeta);
+                    }
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < tokensAcciones.size(); i++) {
+            switch (tokensAcciones.get(i).getType()) {
+                case "LLAVE_A": {
+                    Action action = new Action();
+                    action.setFirsToken(tokensAcciones.get(i));
+                    i++;
+                    while (!tokensAcciones.get(i).getType().equals("LLAVE_C")) {
+                        switch (tokensAcciones.get(i).getType()) {
+                            case "PR_TIPO": {
+                                i++;
+                                if (action.getType() == -1) {
+                                    action.setType(Integer.parseInt(tokensAcciones.get(i).getLexem()));
+                                    if(action.getType()==1)action.setAtack(new Atack());
+                                } else {
+                                    errores.add(new ErrorMessage(tokensAcciones.get(i).getLine(), tokensAcciones.get(i).getColumn(), tokensAcciones.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
+                                }
+                                break;
+                            }
+                            case "PR_TURNO": {
+                                i++;
+                                if (action.getTurn() == -1) {
+                                    action.setTurn(Integer.parseInt(tokensAcciones.get(i).getLexem()));
+                                } else {
+                                    errores.add(new ErrorMessage(tokensAcciones.get(i).getLine(), tokensAcciones.get(i).getColumn(), tokensAcciones.get(i).getLexem(), "Ya existe un valor de turno"));
+                                }
+                                break;
+                            }
+                            case "PR_JUGADOR": {
+                                i++;
+                                if (action.getPlayerName() == null) {
+                                    action.setPlayerName(tokensAcciones.get(i).getLexem());
+                                } else {
+                                    errores.add(new ErrorMessage(tokensAcciones.get(i).getLine(), tokensAcciones.get(i).getColumn(), tokensAcciones.get(i).getLexem(), "Ya existe un valor de jugador"));
+                                }
+                                break;
+                            }
+                            case "PR_TURNO_SALIDA": {
+                                i++;
+                                action.getAtack().setExitTurn(Integer.parseInt(tokensAcciones.get(i).getLexem()));
+                                break;
+                            }
+                            case "PR_TURNO_LLEGADA": {
+                                i++;
+                                action.getAtack().setTargetTurn((Integer.parseInt(tokensAcciones.get(i).getLexem())));
+                                break;
+                            }
+                            case "PR_PLANETA_SALIDA": {
+                                i++;
+                                action.getAtack().setNameExitPlanet(tokensAcciones.get(i).getLexem());
+                                break;
+                            }
+                            case "PR_PLANETA_DESTINO": {
+                                i++;
+                                action.getAtack().setNameDestinyPlanet(tokensAcciones.get(i).getLexem());
+                                break;
+                            }
+                            case "PR_NAVES": {
+                                i++;
+                                action.getAtack().setShips(Integer.parseInt(tokensAcciones.get(i).getLexem()));
+                                break;
+                            }
+                            case "PR_PORCENTAJE_MUERTES": {
+                                i++;
+                                action.getAtack().setPorcentajeDeMuerte(Double.parseDouble(tokensAcciones.get(i).getLexem()));
+                                break;
+                            }
+                        }
+                        i++;
+                    }
+                    this.actions.getAccionesRealizadas().add(action);
+                    break;
+                }
+            }
+        }
+        this.configuration.doLastConfigurationsRp();
+        players = new ArrayList<Player>(configuration.getPlayers());
+        planets = new ArrayList<Planet>(configuration.getPlanets());
+        this.mode = 2;
     }
 
     public int getMode() {
@@ -540,7 +812,7 @@ public class GameManager {
     public void setAtacks(Atacks atacks) {
         this.atacks = atacks;
     }
-    
+
     public boolean isVictoria() {
         return victoria;
     }

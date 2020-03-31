@@ -28,7 +28,7 @@ public class GameUtilities {
                 case 1:{
                     if(tokens.get(i).getType().equals("PR_MAPA")){
                         i++;
-                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_ACCIONES"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
                             resultado.add(tokens.get(i));
                             i++;
                         }
@@ -38,7 +38,7 @@ public class GameUtilities {
                 case 2:{
                     if(tokens.get(i).getType().equals("PR_PLANETAS")){
                         i++;
-                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_ACCIONES"))&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
                             resultado.add(tokens.get(i));
                             i++;
                         }
@@ -48,7 +48,7 @@ public class GameUtilities {
                 case 3:{
                     if(tokens.get(i).getType().equals("PR_JUGADORES")){
                         i++;
-                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_ACCIONES"))&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))){
                             resultado.add(tokens.get(i));
                             i++;
                         }
@@ -58,12 +58,21 @@ public class GameUtilities {
                 case 4:{
                     if(tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES")){
                         i++;
-                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_ACCIONES"))&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
                             resultado.add(tokens.get(i));
                             i++;
                         }
                     }
                     break;
+                }
+                case 5:{
+                    if(tokens.get(i).getType().equals("PR_ACCIONES")){
+                        i++;
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_JUGAODRES"))){
+                            resultado.add(tokens.get(i));
+                            i++;
+                        }
+                    }
                 }
             }
         }
@@ -116,8 +125,8 @@ public class GameUtilities {
             planet.setConqueror(modelTablePlanets.getValueAt(i, 4).toString());
             planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]);
             planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]);
-            if(Utilities.getPlayer(planets.get(i), players)!=null)Utilities.getPlayer(planets.get(i), players).setNavesCreadas(planets.get(i).getShips());
-            if(Utilities.getPlayer(planets.get(i), players)!=null)Utilities.getPlayer(planets.get(i), players).setPlanetasConquistados(Utilities.getPlayer(planets.get(i), players).getPlanetasConquistados()+1);
+            if(Utilities.getPlayer(planet, players)!=null)Utilities.getPlayer(planet, players).setNavesCreadas(planet.getShips());
+            if(Utilities.getPlayer(planet, players)!=null)Utilities.getPlayer(planet, players).setPlanetasConquistados(Utilities.getPlayer(planet, players).getPlanetasConquistados()+1);
             planets.add(planet);
             configuration.getPlanets().add(planet);
         }

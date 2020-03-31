@@ -72,4 +72,12 @@ public class GameConfiguration {
         }
     }
     
+    public void doLastConfigurationsRp(){
+        int color=0;
+        for (Player player : players) {
+            String colorReal = Utilities.getColorByNumber(color);
+            player.setColor(colorReal);
+            color = (color<5)? color+1:0;
+        }
+    }
 }

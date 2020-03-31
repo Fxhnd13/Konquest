@@ -18,7 +18,7 @@ import javax.swing.plaf.ComponentUI;
  */
 public class Planet{
     
-    private int ships=-1, production=-1, positionX, positionY; //alto y ancho respectivamente
+    private int ships=-1, production=-1, positionX=-1, positionY=-1; //alto y ancho respectivamente
     private String name=null, conqueror;
     private double deathPercentage=-1;
     private Token firstToken;

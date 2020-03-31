@@ -1,0 +1,123 @@
+{
+MAPA : {
+    id : "asdf",
+    tamano : {
+        filas : 5,
+        columnas : 5
+    },
+    mapaCiego : false,
+    acumular : false,
+    NEUTRALES : {
+        mostrarNaves : true,
+        mostrarEstadisticas : true
+    }
+},
+JUGADORES : [
+      {
+          nombre : "jose
+      },
+      {
+          nombre : "juan
+      }
+],
+PLANETAS : [
+      {
+          nombre : "A",
+          naves : 9,
+          produccion : 3,
+          porcentajeMuertes : 0.8749463964260065,
+          conquistador : "jose",
+          posicionX : 3,
+          posicionY : 2
+      },
+      {
+          nombre : "B",
+          naves : 29,
+          produccion : 7,
+          porcentajeMuertes : 0.6015078468475766,
+          conquistador : "juan",
+          posicionX : 1,
+          posicionY : 1
+      },
+      {
+          nombre : "C",
+          naves : 65,
+          produccion : 14,
+          porcentajeMuertes : 0.6057470556689162,
+          conquistador : "Nadie",
+          posicionX : 1,
+          posicionY : 2
+      },
+      {
+          nombre : "D",
+          naves : 34,
+          produccion : 17,
+          porcentajeMuertes : 0.46779883722264326,
+          conquistador : "jose",
+          posicionX : 1,
+          posicionY : 4
+      },
+      {
+          nombre : "E",
+          naves : 36,
+          produccion : 4,
+          porcentajeMuertes : 0.8973670361939355,
+          conquistador : "Nadie",
+          posicionX : 0,
+          posicionY : 3
+      }
+],
+ACCIONES : [
+     {
+          tipo : 0,
+          jugador : "jose",
+          turno : 1
+    },
+     {
+          tipo : 0,
+          jugador : "juan",
+          turno : 1
+    },
+     {
+          tipo : 1,
+          jugador : "jose",
+          turno : 2,
+          turnoSalida : 3,
+          turnoLlegada : 5,
+          naves : 18,
+          planetaSalida : "A",
+          planetaDestino : "D",
+          porcentajeMuertes : 0.8749463964260065
+    },
+     {
+          tipo : 0,
+          jugador : "jose",
+          turno : 2
+    },
+     {
+          tipo : 0,
+          jugador : "juan",
+          turno : 2
+    },
+     {
+          tipo : 0,
+          jugador : "jose",
+          turno : 3
+    },
+     {
+          tipo : 0,
+          jugador : "juan",
+          turno : 3
+    },
+     {
+          tipo : 0,
+          jugador : "jose",
+          turno : 4
+    },
+     {
+          tipo : 0,
+          jugador : "juan",
+          turno : 4
+    }
+]
+}

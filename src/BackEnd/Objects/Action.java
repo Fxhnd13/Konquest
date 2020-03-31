@@ -5,16 +5,19 @@
  */
 package BackEnd.Objects;
 
+import Analizadores.Objects.Token;
+
 /**
  *
  * @author jose_
  */
 public class Action {
     
-    private int turn, type;
+    private int turn=-1, type=-1;
     private Atack atack = null;
     private Return retorno = null;
-    private String playerName;
+    private String playerName=null;
+    private Token firsToken=null;
 
     public Action(int turn, int type, Atack atack, String playerName){
         this.type = type;
@@ -34,6 +37,17 @@ public class Action {
         }else{
             System.out.println("EL jugador "+this.playerName+" termino su turno.\n\n");
         }
+    }
+
+    public Action() {
+    }
+
+    public Token getFirsToken() {
+        return firsToken;
+    }
+
+    public void setFirsToken(Token firsToken) {
+        this.firsToken = firsToken;
     }
     
     public int getTurn() {

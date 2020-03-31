@@ -1,0 +1,91 @@
+{
+MAPA : {
+    id : "asd",
+    tamano : {
+        filas : 4,
+        columnas : 4
+    },
+    mapaCiego : false,
+    acumular : false,
+    NEUTRALES : {
+        mostrarNaves : true,
+        mostrarEstadisticas : true
+    }
+},
+JUGADORES : [
+      {
+          nombre : "A"
+      }
+],
+PLANETAS : [
+      {
+          nombre : "A",
+          naves : 52,
+          produccion : 13,
+          porcentajeMuertes : 0.9849082033178372,
+          conquistador : "A",
+          posicionX : 1,
+          posicionY : 3
+      },
+      {
+          nombre : "B",
+          naves : 32,
+          produccion : 4,
+          porcentajeMuertes : 0.4030216728115371,
+          conquistador : "Nadie",
+          posicionX : 2,
+          posicionY : 1
+      },
+      {
+          nombre : "C",
+          naves : 15,
+          produccion : 3,
+          porcentajeMuertes : 0.9155266828396516,
+          conquistador : "Nadie",
+          posicionX : 0,
+          posicionY : 1
+      },
+      {
+          nombre : "D",
+          naves : 47,
+          produccion : 14,
+          porcentajeMuertes : 0.39955618801003523,
+          conquistador : "A",
+          posicionX : 2,
+          posicionY : 3
+      }
+],
+ACCIONES : [
+     {
+          tipo : 1,
+          jugador : "A",
+          turno : 1,
+          turnoSalida : 2,
+          turnoLlegada : 3,
+          naves : 5,
+          planetaSalida : "A",
+          planetaDestino : "D",
+          porcentajeMuertes : 0.9849082033178372
+    },
+     {
+          tipo : 0,
+          jugador : "A",
+          turno : 1
+    },
+     {
+          tipo : 0,
+          jugador : "A",
+          turno : 2
+    },
+     {
+          tipo : 0,
+          jugador : "A",
+          turno : 3
+    },
+     {
+          tipo : 0,
+          jugador : "A",
+          turno : 4
+    }
+]
+}

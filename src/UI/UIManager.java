@@ -145,12 +145,13 @@ public class UIManager {
         texto+= "\n    NEUTRALES : {";
         texto+= "\n        mostrarNaves : "+gameManager.getConfiguration().getMap().getNeutrales().isShowShips()+",";
         texto+= "\n        mostrarEstadisticas : "+gameManager.getConfiguration().getMap().getNeutrales().isShowStadistics();
-        texto+= "\n    }";
+        texto+= "\n    },";
+        texto+="\n     finalizacion : "+gameManager.getConfiguration().getMap().getFinalization();
         texto+= "\n},";
         texto+="\nJUGADORES : [";
         for (Player player : gameManager.getConfiguration().getPlayers()) {
             texto+="\n      {";
-            texto+="\n          nombre : \""+player.getName()+"\",";
+            texto+="\n          nombre : \""+player.getName();
             texto+="\n      },";
         }
         texto = texto.substring(0, texto.length()-1);
@@ -158,7 +159,7 @@ public class UIManager {
         texto+="\nPLANETAS : [";
         for (Planet planet : gameManager.getConfiguration().getPlanets()) {
             texto+="\n      {";
-            texto+="\n          nombre : "+planet.getName()+",";
+            texto+="\n          nombre : \""+planet.getName()+"\",";
             texto+="\n          naves : "+planet.getShips()+",";
             texto+="\n          produccion : "+planet.getProduction()+",";
             texto+="\n          porcentajeMuertes : "+planet.getDeathPercentage()+",";
@@ -179,8 +180,8 @@ public class UIManager {
                 texto+="\n          turnoSalida : "+action.getAtack().getExitTurn()+",";
                 texto+="\n          turnoLlegada : "+action.getAtack().getTargetTurn()+",";
                 texto+="\n          naves : "+action.getAtack().getShips()+",";
-                texto+="\n          planetaSalida : "+action.getAtack().getNameExitPlanet()+",";
-                texto+="\n          planetaDestino : "+action.getAtack().getNameDestinyPlanet()+",";
+                texto+="\n          planetaSalida : \""+action.getAtack().getNameExitPlanet()+"\",";
+                texto+="\n          planetaDestino : \""+action.getAtack().getNameDestinyPlanet()+"\",";
                 texto+="\n          porcentajeMuertes : "+action.getAtack().getPorcentajeDeMuerte();
             }else{
                 texto = texto.substring(0, texto.length()-1);
@@ -226,7 +227,7 @@ public class UIManager {
         texto+="\nJUGADORES : [";
         for (Player player : gameManager.getConfiguration().getPlayers()) {
             texto+="\n      {";
-            texto+="\n          nombre : \""+player.getName()+"\",";
+            texto+="\n          nombre : \""+player.getName()+"\"";
             texto+="\n      },";
         }
         texto = texto.substring(0, texto.length()-1);
@@ -234,7 +235,7 @@ public class UIManager {
         texto+="\nPLANETAS : [";
         for (Planet planet : gameManager.getConfiguration().getPlanets()) {
             texto+="\n      {";
-            texto+="\n          nombre : "+planet.getName()+",";
+            texto+="\n          nombre : \""+planet.getName()+"\",";
             texto+="\n          naves : "+planet.getShips()+",";
             texto+="\n          produccion : "+planet.getProduction()+",";
             texto+="\n          porcentajeMuertes : "+planet.getDeathPercentage()+",";
@@ -255,8 +256,8 @@ public class UIManager {
                 texto+="\n          turnoSalida : "+action.getAtack().getExitTurn()+",";
                 texto+="\n          turnoLlegada : "+action.getAtack().getTargetTurn()+",";
                 texto+="\n          naves : "+action.getAtack().getShips()+",";
-                texto+="\n          planetaSalida : "+action.getAtack().getNameExitPlanet()+",";
-                texto+="\n          planetaDestino : "+action.getAtack().getNameDestinyPlanet()+",";
+                texto+="\n          planetaSalida : \""+action.getAtack().getNameExitPlanet()+"\",";
+                texto+="\n          planetaDestino : \""+action.getAtack().getNameDestinyPlanet()+"\",";
                 texto+="\n          porcentajeMuerte : "+action.getAtack().getPorcentajeDeMuerte();
             }else{
                 texto = texto.substring(0, texto.length()-1);

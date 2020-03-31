@@ -1038,7 +1038,7 @@ public class LexerRp implements java_cup.runtime.Scanner {
             // fall through
           case 78: break;
           case 38: 
-            { toknes.add(new Token(yytext(), "PR_PLANETA_DESTINO", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PR_PLANETA_DESTINO,"planetaDestino");
+            { tokens.add(new Token(yytext(), "PR_PLANETA_DESTINO", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PR_PLANETA_DESTINO,"planetaDestino");
             } 
             // fall through
           case 79: break;
