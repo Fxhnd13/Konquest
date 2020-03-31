@@ -8,6 +8,8 @@ package BackEnd.Configuration;
 import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
+import static BackEnd.Utilities.GameUtilities.posicionXY;
+import BackEnd.Utilities.Utilities;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +44,32 @@ public class GameConfiguration {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public void doLastConfigurations() {
+        int color=0;
+        for (Player player : players) {
+            for (String planeta : player.getPlanetas()) {
+                Utilities.getPlanetaPorNombre(planeta, planets).setConqueror(player.getName());
+            }
+            String colorReal = Utilities.getColorByNumber(color);
+            player.setColor(colorReal);
+            color = (color<5)? color+1:0;
+        }
+        for (int i = 0; i<planets.size(); i++) {
+            int[] posiciones = Utilities.numerosAleatoriosEntre(planets.size(), map.getFilas()*map.getColumnas());
+            if(planets.get(i).getProduction()==-1){
+                planets.get(i).setProduction(this.map.getNeutrales().getProduction());
+            }
+            if(planets.get(i).getConqueror()==null){
+                planets.get(i).setConqueror("Nadie");
+            }else{
+                Utilities.getPlayer(planets.get(i), players).setNavesCreadas(planets.get(i).getShips());
+                Utilities.getPlayer(planets.get(i), players).setPlanetasConquistados(Utilities.getPlayer(planets.get(i), players).getPlanetasConquistados()+1);
+            }
+            planets.get(i).setPositionX(posicionXY(posiciones[i], map.getFilas(), map.getColumnas())[0]);
+            planets.get(i).setPositionY(posicionXY(posiciones[i], map.getFilas(), map.getColumnas())[1]);
+        }
     }
     
 }

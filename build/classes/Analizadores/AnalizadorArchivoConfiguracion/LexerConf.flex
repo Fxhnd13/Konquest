@@ -74,10 +74,10 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
 %%
 
 <YYINITIAL>{
-    "MAPA"              {this.existenTokens = true; return symbol(sym.PR_MAPA, "MAPA");}
-    "JUGADORES"         {this.existenTokens = true; return symbol(sym.PR_JUGADORES, "JUGADORES");}
-    "PLANETAS"          {this.existenTokens = true; return symbol(sym.PR_PLANETAS, "PLANETAS");}
-    "PLANETAS_NEUTRALES" {this.existenTokens = true; return symbol(sym.PR_PLANETAS_NEUTRALES, "PLANETAS_NEUTRALES");}
+    "MAPA"              {tokens.add(new Token(yytext(), "PR_MAPA", yyline, yycolumn)); this.existenTokens = true; return symbol(sym.PR_MAPA, "MAPA");}
+    "JUGADORES"         {tokens.add(new Token(yytext(), "PR_JUGADORES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_JUGADORES, "JUGADORES");}
+    "PLANETAS"          {tokens.add(new Token(yytext(), "PR_PLANETAS", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_PLANETAS, "PLANETAS");}
+    "PLANETAS_NEUTRALES" {tokens.add(new Token(yytext(), "PR_PLANETAS_NEUTRALES", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_PLANETAS_NEUTRALES, "PLANETAS_NEUTRALES");}
     "id"                {tokens.add(new Token(yytext(), "PR_ID", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_ID, "id");}
     "tamano"            {tokens.add(new Token(yytext(), "PR_SIZE", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_SIZE, "tamaño");}
     "filas"             {tokens.add(new Token(yytext(), "PR_FILAS", yyline, yycolumn));this.existenTokens = true; return symbol(sym.PR_FILAS, "filas");}
@@ -100,10 +100,10 @@ WhiteSpace     = {LineTerminator} | [ \t\f]
     "DIFICIL"           {tokens.add(new Token(yytext(), "TIPO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.TIPO, yytext());}
     "FACIL"             {tokens.add(new Token(yytext(), "TIPO", yyline, yycolumn));this.existenTokens = true; return symbol(sym.TIPO, yytext());}
     ("true")|("false")  {tokens.add(new Token(yytext(), "BOOLEAN", yyline, yycolumn));this.existenTokens = true; return symbol(sym.BOOLEAN, yytext());}
-    "{"                 {this.existenTokens = true; return symbol(sym.LLAVE_A, "{");}
-    "}"                 {this.existenTokens = true; return symbol(sym.LLAVE_C, "}");}
-    "["                 {this.existenTokens = true; return symbol(sym.CORCHETE_A, "[");}
-    "]"                 {this.existenTokens = true; return symbol(sym.CORCHETE_C, "]");}
+    "{"                 {tokens.add(new Token(yytext(), "LLAVE_A", yyline, yycolumn));this.existenTokens = true; return symbol(sym.LLAVE_A, "{");}
+    "}"                 {tokens.add(new Token(yytext(), "LLAVE_C", yyline, yycolumn));this.existenTokens = true; return symbol(sym.LLAVE_C, "}");}
+    "["                 {tokens.add(new Token(yytext(), "CORCHETE_A", yyline, yycolumn));this.existenTokens = true; return symbol(sym.CORCHETE_A, "[");}
+    "]"                 {tokens.add(new Token(yytext(), "CORCHETE_C", yyline, yycolumn));this.existenTokens = true; return symbol(sym.CORCHETE_C, "]");}
     ":"                 {this.existenTokens = true; return symbol(sym.ASIGNACION, ":");}
     ({ID})              {tokens.add(new Token(yytext(), "ID", yyline, yycolumn));this.existenTokens = true; return symbol(sym.ID, yytext()); }
     "\""                {this.existenTokens = true; return symbol(sym.COMILLA, "\"");}

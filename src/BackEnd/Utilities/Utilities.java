@@ -155,6 +155,19 @@ public class Utilities {
         return color;
     }
     
+    public static String getColorByNumber(int a){
+        String color = null;
+        switch(a){
+            case 0: color = "Rojo"; break;
+            case 1: color = "Azul"; break;
+            case 2: color = "Verde"; break;
+            case 3: color = "Amarillo"; break;
+            case 4: color = "Naranja"; break;
+            case 5: color = "Blanco"; break;
+        }
+        return color;
+    }
+    
     public static int getTypePlayer(String a){
         int valor = 0;
         switch(a){

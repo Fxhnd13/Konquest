@@ -1452,7 +1452,13 @@ public class Game extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Hubo Errores Graves", "Error", JOptionPane.ERROR_MESSAGE);
             }finally{
                 if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
-                    gameManager.verificarDatosJuego(lexer.getTokens());
+                    gameManager.verificarDatosJuego(lexer.getTokens(), parser.getErrores());
+                    if(parser.getErrores().isEmpty()){
+                        doCells(gameManager.getConfiguration().getMap(), SpacePanel, gameManager.getPlanets());
+                        LectorTexto.setVisible(false);
+                    }else{
+                        mostrarErrores(parser.getErrores());
+                    }
                 }else{
                     if(lexer.getErrores().isEmpty()){
                         mostrarErrores(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
@@ -1493,6 +1499,8 @@ public class Game extends javax.swing.JFrame {
 
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
+        SpacePanel.removeAll();
+        SpacePanel.setLayout(new GridLayout(map.getFilas(), map.getColumnas()));
         NamePlayerInTurn.setText(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getName());
         NamePlayerInTurn.setBackground(Utilities.getColor(gameManager.getPlayers().get(gameManager.getJugadorEnTurno()).getColorPlayer()));
         for (int i = 0; i < map.getFilas(); i++) {//por cada fila

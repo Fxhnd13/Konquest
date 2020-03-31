@@ -7,6 +7,7 @@ package BackEnd.Utilities;
 
 import Analizadores.Objects.Token;
 import BackEnd.Configuration.GameConfiguration;
+import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
 import UI.Cell;
@@ -27,7 +28,7 @@ public class GameUtilities {
                 case 1:{
                     if(tokens.get(i).getType().equals("PR_MAPA")){
                         i++;
-                        while((!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
                             resultado.add(tokens.get(i));
                             i++;
                         }
@@ -35,13 +36,11 @@ public class GameUtilities {
                     break;
                 }
                 case 2:{
-                    if(tokens.get(i).getType().equals("PR_PLANETAS")||tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES")){
+                    if(tokens.get(i).getType().equals("PR_PLANETAS")){
                         i++;
-                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
                             resultado.add(tokens.get(i));
-                        }
-                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS"))||(!tokens.get(i).getType().equals("PR_JUGADORES"))){
-                            resultado.add(tokens.get(i));
+                            i++;
                         }
                     }
                     break;
@@ -49,8 +48,19 @@ public class GameUtilities {
                 case 3:{
                     if(tokens.get(i).getType().equals("PR_JUGADORES")){
                         i++;
-                        while((!tokens.get(i).getType().equals("PR_MAPA"))||(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))||(!tokens.get(i).getType().equals("PR_PLANETAS"))){
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))){
                             resultado.add(tokens.get(i));
+                            i++;
+                        }
+                    }
+                    break;
+                }
+                case 4:{
+                    if(tokens.get(i).getType().equals("PR_PLANETAS_NEUTRALES")){
+                        i++;
+                        while(i<tokens.size()&&(!tokens.get(i).getType().equals("PR_MAPA"))&&(!tokens.get(i).getType().equals("PR_PLANETAS"))&&(!tokens.get(i).getType().equals("PR_JUGADORES"))){
+                            resultado.add(tokens.get(i));
+                            i++;
                         }
                     }
                     break;
@@ -106,8 +116,8 @@ public class GameUtilities {
             planet.setConqueror(modelTablePlanets.getValueAt(i, 4).toString());
             planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]);
             planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]);
-            players.get(i).setNavesCreadas(planet.getShips());
-            players.get(i).setPlanetasConquistados(1);
+            if(Utilities.getPlayer(planets.get(i), players)!=null)Utilities.getPlayer(planets.get(i), players).setNavesCreadas(planets.get(i).getShips());
+            if(Utilities.getPlayer(planets.get(i), players)!=null)Utilities.getPlayer(planets.get(i), players).setPlanetasConquistados(Utilities.getPlayer(planets.get(i), players).getPlanetasConquistados()+1);
             planets.add(planet);
             configuration.getPlanets().add(planet);
         }
@@ -154,4 +164,14 @@ public class GameUtilities {
         }
         return cantidad;
     }
+    
+    public static boolean verificarValidezMapa(Map mapa, boolean azar){
+        boolean valor = true;
+        if(mapa.getFilas()==-1) valor=false;
+        if(mapa.getColumnas()==-1) valor = false;
+        if(mapa.getId()== null) valor = false;
+        if(azar&&mapa.getPlanetasNeutrales()==-1)valor=false;
+        return valor;
+    }
+    
 }

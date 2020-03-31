@@ -5,6 +5,7 @@
  */
 package BackEnd.Objects;
 
+import Analizadores.Objects.Token;
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -14,14 +15,18 @@ import java.util.ArrayList;
  */
 public class Player {
     
-    private String name, color, type;
+    private String name=null, color, type=null;
     private int navesCreadas=0, navesDestruidas=0, planetasConquistados=0, ataquesRealizados=0;
+    private ArrayList<String> planetas = new ArrayList<String>();
+    private Token firsToken;
     
     public Player(String name, String color, String type){
         this.name = name;
         this.color = color;
         this.type = type;
     }
+
+    public Player() {}
 
     public String getColor() {
         return color;
@@ -84,5 +89,29 @@ public class Player {
 
     public void setColorPlayer(String colorPlayer) {
         this.color = colorPlayer;
+    }
+
+    public ArrayList<String> getPlanetas() {
+        return planetas;
+    }
+
+    public void setPlanetas(ArrayList<String> planetas) {
+        this.planetas = planetas;
+    }
+
+    public Token getFirsToken() {
+        return firsToken;
+    }
+
+    public void setFirsToken(Token firsToken) {
+        this.firsToken = firsToken;
+    }
+    
+    public boolean isValid(){
+        if(this.name!=null&&this.type!=null&&!this.planetas.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

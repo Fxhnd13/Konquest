@@ -5,6 +5,7 @@
  */
 package BackEnd.Objects;
 
+import Analizadores.Objects.Token;
 import java.awt.Component;
 import javax.accessibility.AccessibleContext;
 import javax.swing.JLabel;
@@ -17,9 +18,10 @@ import javax.swing.plaf.ComponentUI;
  */
 public class Planet{
     
-    private int ships, production, positionX, positionY; //alto y ancho respectivamente
-    private String name, conqueror;
-    private double deathPercentage;
+    private int ships=-1, production=-1, positionX, positionY; //alto y ancho respectivamente
+    private String name=null, conqueror;
+    private double deathPercentage=-1;
+    private Token firstToken;
 
     public Planet(String name, String ships, String production, String Deathless, String Conquer) {
         this.name = name;
@@ -86,5 +88,20 @@ public class Planet{
     public void setDeathPercentage(double deathPercentage) {
         this.deathPercentage = deathPercentage;
     }
+
+    public Token getFirstToken() {
+        return firstToken;
+    }
+
+    public void setFirstToken(Token firstToken) {
+        this.firstToken = firstToken;
+    }
     
+    public boolean isValid(){
+        if(this.name!=null&&this.ships!=-1&&this.deathPercentage!=-1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
