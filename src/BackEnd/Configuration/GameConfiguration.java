@@ -57,7 +57,7 @@ public class GameConfiguration {
             color = (color<5)? color+1:0;
         }
         for (int i = 0; i<planets.size(); i++) {
-            int[] posiciones = Utilities.numerosAleatoriosEntre(planets.size(), map.getFilas()*map.getColumnas());
+            int[] posiciones = Utilities.numerosAleatoriosEntre(planets.size(), (map.getFilas()*map.getColumnas())-1);
             if(planets.get(i).getProduction()==-1){
                 planets.get(i).setProduction(this.map.getNeutrales().getProduction());
             }

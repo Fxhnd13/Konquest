@@ -44,7 +44,7 @@ public class GameManager {
 
     private GameConfiguration configuration = new GameConfiguration();
     private boolean alAzar = false, victoria = false;
-    private int turno = 1, jugadorEnTurno = 0, state = 0;
+    private int turno = 1, jugadorEnTurno = 0, state = 0, mode = 0;
     private Atacks atacks = new Atacks();
     private Actions actions = new Actions();
     private Cell exitCell = null, destinyCell = null;
@@ -509,8 +509,36 @@ public class GameManager {
             }
         }
         this.configuration.doLastConfigurations();
-        this.planets = this.configuration.getPlanets();
         this.players = this.configuration.getPlayers();
+        if(alAzar){
+            this.doPlanets(configuration.getMap().getPlanetasNeutrales(), configuration.getMap().getFilas(), configuration.getMap().getColumnas());
+        }else{
+            this.planets = this.configuration.getPlanets();
+        }
+    }
+
+    public int getMode() {
+        return mode;
+    }
+
+    public Actions getActions() {
+        return actions;
+    }
+
+    public ArrayList<Return> getReturns() {
+        return returns;
+    }
+
+    public ArrayList<String> getMensajes() {
+        return mensajes;
+    }
+
+    public Atacks getAtacks() {
+        return atacks;
+    }
+
+    public void setAtacks(Atacks atacks) {
+        this.atacks = atacks;
     }
     
     public boolean isVictoria() {
