@@ -370,7 +370,9 @@ public class GameManager {
             switch (tokensJugadores.get(i).getType()) {
                 case "LLAVE_A": {
                     Player player = new Player();
+                    Player player2 = new Player();
                     player.setFirsToken(tokensJugadores.get(i));
+                    player2.setFirsToken(tokensJugadores.get(i));
                     i++;
                     while (!tokensJugadores.get(i).getType().equals("LLAVE_C")) {
                         switch (tokensJugadores.get(i).getType()) {
@@ -378,6 +380,7 @@ public class GameManager {
                                 i++;
                                 if (player.getName() == null) {
                                     player.setName(tokensJugadores.get(i).getLexem());
+                                    player2.setName(tokensJugadores.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
@@ -387,6 +390,7 @@ public class GameManager {
                                 i++;
                                 if (player.getType() == null) {
                                     player.setType(tokensJugadores.get(i).getLexem());
+                                    player2.setType(tokensJugadores.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el tipo."));
                                 }
@@ -396,6 +400,7 @@ public class GameManager {
                                 i++;
                                 while (i < tokensJugadores.size() && !tokensJugadores.get(i).getType().equals("CORCHETE_C")) {
                                     player.getPlanetas().add(tokensJugadores.get(i).getLexem());
+                                    player2.getPlanetas().add(tokensJugadores.get(i).getLexem());
                                     i++;
                                 }
                                 break;
@@ -407,6 +412,7 @@ public class GameManager {
                         errores.add(new ErrorMessage(player.getFirsToken().getLine(), player.getFirsToken().getColumn(), player.getFirsToken().getLexem(), "Faltan datos en la estructura del jugador."));
                     } else {
                         this.configuration.getPlayers().add(player);
+                        this.players.add(player2);
                     }
                     break;
                 }
@@ -416,6 +422,7 @@ public class GameManager {
             switch (tokensPlanetas.get(i).getType()) {
                 case "LLAVE_A": {
                     Planet planeta = new Planet();
+                    Planet planeta2 = new Planet();
                     planeta.setFirstToken(tokensPlanetas.get(i));
                     i++;
                     while (!tokensPlanetas.get(i).getType().equals("LLAVE_C")) {
@@ -424,6 +431,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getName() == null) {
                                     planeta.setName(tokensPlanetas.get(i).getLexem());
+                                    planeta2.setName(tokensPlanetas.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
@@ -433,6 +441,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getDeathPercentage() == -1) {
                                     planeta.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el porcentaje de muertes."));
                                 }
@@ -442,6 +451,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getProduction() == -1) {
                                     planeta.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para la produccion."));
                                 }
@@ -451,6 +461,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getShips() == -1) {
                                     planeta.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para las naves."));
                                 }
@@ -465,6 +476,7 @@ public class GameManager {
                             errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta."));
                         } else {
                             this.configuration.getPlanets().add(planeta);
+                            this.planets.add(planeta2);
                         }
                     }
                     break;
@@ -527,11 +539,8 @@ public class GameManager {
             }
         }
         this.configuration.doLastConfigurations();
-        players = new ArrayList<Player>(configuration.getPlayers());
         if (alAzar) {
             this.doPlanets(configuration.getMap().getPlanetasNeutrales(), configuration.getMap().getFilas(), configuration.getMap().getColumnas());
-        } else {
-            planets = new ArrayList<Planet>(configuration.getPlanets());
         }
     }
 
@@ -605,6 +614,7 @@ public class GameManager {
             switch (tokensJugadores.get(i).getType()) {
                 case "LLAVE_A": {
                     Player player = new Player();
+                    Player player2 = new Player();
                     player.setFirsToken(tokensJugadores.get(i));
                     i++;
                     while (!tokensJugadores.get(i).getType().equals("LLAVE_C")) {
@@ -612,6 +622,7 @@ public class GameManager {
                             case "PR_NOMBRE": {
                                 i++;
                                 if (player.getName() == null) {
+                                    player.setName(tokensJugadores.get(i).getLexem());
                                     player.setName(tokensJugadores.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensJugadores.get(i).getLine(), tokensJugadores.get(i).getColumn(), tokensJugadores.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
@@ -622,6 +633,7 @@ public class GameManager {
                         i++;
                     }
                     this.configuration.getPlayers().add(player);
+                    this.players.add(player2);
                     break;
                 }
             }
@@ -630,6 +642,7 @@ public class GameManager {
             switch (tokensPlanetas.get(i).getType()) {
                 case "LLAVE_A": {
                     Planet planeta = new Planet();
+                    Planet planeta2 = new Planet();
                     planeta.setFirstToken(tokensPlanetas.get(i));
                     i++;
                     while (!tokensPlanetas.get(i).getType().equals("LLAVE_C")) {
@@ -638,6 +651,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getName() == null) {
                                     planeta.setName(tokensPlanetas.get(i).getLexem());
+                                    planeta2.setName(tokensPlanetas.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el nombre."));
                                 }
@@ -647,6 +661,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getDeathPercentage() == -1) {
                                     planeta.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setDeathPercentage(Double.parseDouble(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para el porcentaje de muertes."));
                                 }
@@ -656,6 +671,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getProduction() == -1) {
                                     planeta.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setProduction(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para la produccion."));
                                 }
@@ -665,6 +681,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getShips() == -1) {
                                     planeta.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setShips(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor declarado para las naves."));
                                 }
@@ -674,6 +691,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getConqueror() == null) {
                                     planeta.setConqueror(tokensPlanetas.get(i).getLexem());
+                                    planeta2.setConqueror(tokensPlanetas.get(i).getLexem());
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para el conquistador del planeta."));
                                 }
@@ -683,6 +701,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getPositionX() == -1) {
                                     planeta.setPositionX(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setPositionX(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para la posicion x"));
                                 }
@@ -692,6 +711,7 @@ public class GameManager {
                                 i++;
                                 if (planeta.getPositionY() == -1) {
                                     planeta.setPositionY(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
+                                    planeta2.setPositionY(Integer.parseInt(tokensPlanetas.get(i).getLexem()));
                                 } else {
                                     errores.add(new ErrorMessage(tokensPlanetas.get(i).getLine(), tokensPlanetas.get(i).getColumn(), tokensPlanetas.get(i).getLexem(), "Ya existe un valor para la posicion y"));
                                 }
@@ -704,6 +724,7 @@ public class GameManager {
                         errores.add(new ErrorMessage(planeta.getFirstToken().getLine(), planeta.getFirstToken().getColumn(), planeta.getFirstToken().getLexem(), "Faltan datos en la estructura del planeta."));
                     } else {
                         this.configuration.getPlanets().add(planeta);
+                        this.planets.add(planeta2);
                     }
                     break;
                 }
@@ -784,8 +805,6 @@ public class GameManager {
             }
         }
         this.configuration.doLastConfigurationsRp();
-        players = new ArrayList<Player>(configuration.getPlayers());
-        planets = new ArrayList<Planet>(configuration.getPlanets());
         this.mode = 2;
     }
 

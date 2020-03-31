@@ -301,7 +301,7 @@ public class ParserConf extends java_cup.runtime.lr_parser {
         }
 
         public void unrecovered_syntax_error(Symbol cur_token){
-            System.err.println("Couldn't repair and continue parse "+cur_token.value);
+            System.err.println("Couldn't repair and continue parse "+cur_token.value.toString());
         }
 
         public void syntax_error(Symbol s){
@@ -593,7 +593,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-2)).value;
 		 
                             if(atributoMapaRepetido("id")){
-                                System.err.println("Error ID strMapa");
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido elatributo id"));
                             }else{
                                 aggAtributoMapa("id", e); 
                             }
@@ -611,7 +611,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("alAzar")){
-                                System.err.println("Error AZAR strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo alAzar"));
                             }else{
                                 aggAtributoMapa("alAzar", e); 
                             }
@@ -629,7 +629,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("planetasNeutrales")){
-                                System.err.println("Error CANTIDAD PLANETAS NEUTRALES strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "se ha repetido el atributo planetasNeutrales"));
                             }else{
                                 aggAtributoMapa("planetasNeutrales", e); 
                             }
@@ -647,7 +647,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("mapaCiego")){
-                                System.err.println("Error  MAPA CIEGO strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mapa ciego"));
                             }else{
                                 aggAtributoMapa("mapaCiego", e); 
                             }
@@ -665,7 +665,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("acumular")){
-                                System.err.println("Error ACUMULAR strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo acumular"));
                             }else{
                                 aggAtributoMapa("acumular", e); 
                             }
@@ -683,7 +683,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("finalizacion")){
-                               System.err.println("Error FINALIZACION strMapa");
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo finalizacion"));
                             }else{
                                 aggAtributoMapa("finalizacion", e); 
                             }
@@ -719,7 +719,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("filas")){
-                                System.err.println("Error FILAS strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo filas"));
                             }else{
                                 aggAtributoMapa("filas", e); 
                             }
@@ -737,7 +737,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("columnas")){
-                                System.err.println("Error COLUMNAS strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo Columnas"));
                             }else{
                                 aggAtributoMapa("columnas", e); 
                             }
@@ -773,7 +773,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("mostrarNaves")){
-                                System.err.println("Error MOSTRAR NAVES strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mostrarNaves"));
                             }else{
                                 aggAtributoMapa("mostrarNaves", e); 
                             }
@@ -791,7 +791,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("mostrarEstadisticas")){
-                               System.err.println("Error MOSTRAR ESTADISTICAS strMapa");
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mostrar Estadisticas"));
                             }else{
                                 aggAtributoMapa("mostrarEstadisticas", e); 
                             }
@@ -809,7 +809,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-1)).value;
 		 
                             if(atributoMapaRepetido("produccion")){
-                                System.err.println("Error PRODUCCION PREDETERMINADA strMapa");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo produccion"));
                             }else{
                                 aggAtributoMapa("produccion", e); 
                             }
@@ -899,7 +899,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-2)).value;
 		 
                             if(nombreJugadorRepetido(e)){
-                                System.err.println("Error SE REPITIO EL NOMBRE strJugador");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el nombre del jugador"));
                             }else{
                                 aggAtributoJugador("nombre", e); 
                             }
@@ -1022,7 +1022,7 @@ class CUP$ParserConf$actions {
 		String e = (String)((java_cup.runtime.Symbol) CUP$ParserConf$stack.elementAt(CUP$ParserConf$top-2)).value;
 		 
                             if(nombrePlanetaRepetido(e)){
-                                System.err.println("Error NOMBRE REPETIDO strPlaneta");
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se repitio el valor del nombre asignado"));
                             }else{
                                 aggAtributoPlaneta("nombre", e);
                             }

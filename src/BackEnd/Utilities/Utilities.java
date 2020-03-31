@@ -189,9 +189,12 @@ public class Utilities {
     }
 
     public static void ordenarJugadoresPorConquistas(ArrayList<Player> players, ArrayList<Planet> planets) {
+        for (Player player : players) {
+            player.setPlanetasConquistados(GameUtilities.planetasConquistadosPor(player.getName(), planets));
+        }
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size()-1; j++) {
-                if(GameUtilities.planetasConquistadosPor(players.get(j).getName(), planets)<GameUtilities.planetasConquistadosPor(players.get(j+1).getName(), planets)){
+                if(players.get(j).getPlanetasConquistados()<players.get(j+1).getPlanetasConquistados()){
                     Player aux = players.get(j+1);
                     players.set(j+1, players.get(j));
                     players.set(j, aux);

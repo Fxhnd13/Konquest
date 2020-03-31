@@ -10,6 +10,7 @@ import Analizadores.AnalizadorArchivoConfiguracion.ParserConf;
 import Analizadores.AnalizadorArchivoRp.LexerRp;
 import Analizadores.AnalizadorArchivoRp.ParserRp;
 import Analizadores.Objects.ErrorMessage;
+import BackEnd.Objects.Action;
 import BackEnd.Objects.Map;
 import BackEnd.Objects.Planet;
 import BackEnd.Objects.Player;
@@ -173,6 +174,7 @@ public class Game extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         GameConfigurationP.setTitle("Configuracion Juego Personalizado");
@@ -541,7 +543,7 @@ public class Game extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(GameConfigurationPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, GameConfigurationPLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1005,7 +1007,6 @@ public class Game extends javax.swing.JFrame {
                             .addGroup(LectorLayout.createSequentialGroup()
                                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -1253,6 +1254,14 @@ public class Game extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem3);
+
+        jMenuItem5.setText("Guardar Partida");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -1640,7 +1649,41 @@ public class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        if(!LectorTexto.getText().isEmpty()){
+            LexerRp lexer = new LexerRp(new StringReader(LectorTexto.getText()));
+            lexer.analizar();//analiza lexicamente
+            ParserRp parser = null;
+            try {
+                if(lexer.getErrores().isEmpty()){//si no hay errores lexicos entonces analiza sintacticamente
+                    parser = new ParserRp(new LexerRp(new StringReader(LectorTexto.getText())));
+                    parser.parse();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Hubo Errores Graves", "Error", JOptionPane.ERROR_MESSAGE);
+            }finally{
+                if(lexer.getErrores().isEmpty()&&parser.getErrores().isEmpty()){//si no hay errores lexicos ni sintacticos arma el arbol
+                    gameManager.verificarDatosJuegoRepeticion(lexer.getTokens(), parser.getErrores(), 2);
+                    if(parser.getErrores().isEmpty()){
+                        AtackButton.setEnabled(true);
+                        AtackButton.setText("Hacer Ataque");
+                        EndTurnButton.setEnabled(true);
+                        doCells(gameManager.getConfiguration().getMap(), SpacePanel, gameManager.getPlanets());
+                        for (int i = 1; i< gameManager.getTurno(); i++) {
+                            gameManager.realizarAccionesDeTurno(Bitacora, SpacePanel);
+                        }
+                        LectorTexto.setVisible(false);
+                    }else{
+                        mostrarErrores(parser.getErrores());
+                    }
+                }else{
+                    if(lexer.getErrores().isEmpty()){
+                        mostrarErrores(parser.getErrores());//si hay errores y no son lexicos entonces muestra los erroers sintacticos
+                    }else{
+                        mostrarErrores(lexer.getErrores());//si hay errores lexicos los muestra
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -1651,6 +1694,10 @@ public class Game extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         uiManager.escribirRepeticion(gameManager);
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        uiManager.escribirPartida(gameManager);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     public void doCells(Map map, JPanel SpacePanel, ArrayList<Planet> planets){
         int iTemp=1;
@@ -1877,6 +1924,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;

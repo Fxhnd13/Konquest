@@ -266,19 +266,13 @@ dclJugadores ::=        PR_JUGADORES ASIGNACION CORCHETE_A jugadores
                         |error LLAVE_C strJugador
                         ;
 
-jugadores ::=           LLAVE_A strJugador listJugadores;
-
-strJugador ::=          PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA strJugadorPrima {: 
+jugadores ::=           LLAVE_A PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA LLAVE_C listJugadores {: 
                             if(nombreJugadorRepetido(e)){
                                 errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(),"Se repitio el nombre del jugador ingresado"));
                             }else{
                                 aggAtributoJugador("nombre", e); 
                             }
                         :}
-                        ;
-
-strJugadorPrima ::=     SEPARADOR strJugador
-                        |LLAVE_C 
                         ;
 
 listJugadores ::=       SEPARADOR jugadores

@@ -84,7 +84,7 @@ parser code {:
         }
 
         public void unrecovered_syntax_error(Symbol cur_token){
-            System.err.println("Couldn't repair and continue parse "+cur_token.value);
+            System.err.println("Couldn't repair and continue parse "+cur_token.value.toString());
         }
 
         public void syntax_error(Symbol s){
@@ -176,42 +176,42 @@ dclMapa ::=             PR_MAPA ASIGNACION LLAVE_A strMapa
 
 strMapa ::=             PR_ID ASIGNACION COMILLA ID:e COMILLA strMapaPrima {: 
                             if(atributoMapaRepetido("id")){
-                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido elatributo id"));
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido elatributo id"));
                             }else{
                                 aggAtributoMapa("id", e); 
                             }
                         :}
                         |PR_AZAR ASIGNACION BOOLEAN:e strMapaPrima {: 
                             if(atributoMapaRepetido("alAzar")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo alAzar"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo alAzar"));
                             }else{
                                 aggAtributoMapa("alAzar", e); 
                             }
                         :}
                         |PR_CANTIDAD_PLANETAS_NEUTRALES ASIGNACION ENTERO:e strMapaPrima {: 
                             if(atributoMapaRepetido("planetasNeutrales")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "se ha repetido el atributo planetasNeutrales"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "se ha repetido el atributo planetasNeutrales"));
                             }else{
                                 aggAtributoMapa("planetasNeutrales", e); 
                             }
                         :}
                         |PR_MAPA_CIEGO ASIGNACION BOOLEAN:e strMapaPrima{: 
                             if(atributoMapaRepetido("mapaCiego")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo mapa ciego"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mapa ciego"));
                             }else{
                                 aggAtributoMapa("mapaCiego", e); 
                             }
                         :}
                         |PR_ACUMULAR ASIGNACION BOOLEAN:e strMapaPrima {: 
                             if(atributoMapaRepetido("acumular")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo acumular"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo acumular"));
                             }else{
                                 aggAtributoMapa("acumular", e); 
                             }
                         :}
                         |PR_FINALIZACION ASIGNACION ENTERO:e strMapaPrima {: 
                             if(atributoMapaRepetido("finalizacion")){
-                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo finalizacion"));
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo finalizacion"));
                             }else{
                                 aggAtributoMapa("finalizacion", e); 
                             }
@@ -222,14 +222,14 @@ strMapa ::=             PR_ID ASIGNACION COMILLA ID:e COMILLA strMapaPrima {:
 
 strSize ::=             PR_FILAS ASIGNACION ENTERO:e strSizePrima {: 
                             if(atributoMapaRepetido("filas")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo filas"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo filas"));
                             }else{
                                 aggAtributoMapa("filas", e); 
                             }
                         :}
                         |PR_COLUMNAS ASIGNACION ENTERO:e strSizePrima{: 
                             if(atributoMapaRepetido("columnas")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo Columnas"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo Columnas"));
                             }else{
                                 aggAtributoMapa("columnas", e); 
                             }
@@ -242,21 +242,21 @@ strSizePrima ::=        SEPARADOR strSize
 
 strNeutralesConf ::=    PR_MOSTRAR_NAVES ASIGNACION BOOLEAN:e strNeutralesPrima{: 
                             if(atributoMapaRepetido("mostrarNaves")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo mostrarNaves"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mostrarNaves"));
                             }else{
                                 aggAtributoMapa("mostrarNaves", e); 
                             }
                         :}
                         |PR_MOSTRAR_ESTADISTICAS ASIGNACION BOOLEAN:e strNeutralesPrima {: 
                             if(atributoMapaRepetido("mostrarEstadisticas")){
-                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo mostrar Estadisticas"));
+                               errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo mostrar Estadisticas"));
                             }else{
                                 aggAtributoMapa("mostrarEstadisticas", e); 
                             }
                         :}
                         |PR_PRODUCCION ASIGNACION ENTERO:e strNeutralesPrima {: 
                             if(atributoMapaRepetido("produccion")){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el atributo produccion"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el atributo produccion"));
                             }else{
                                 aggAtributoMapa("produccion", e); 
                             }
@@ -280,7 +280,7 @@ jugadores ::=           LLAVE_A strJugador listJugadores;
 
 strJugador ::=          PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA strJugadorPrima {: 
                             if(nombreJugadorRepetido(e)){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se ha repetido el nombre del jugador"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se ha repetido el nombre del jugador"));
                             }else{
                                 aggAtributoJugador("nombre", e); 
                             }
@@ -309,7 +309,7 @@ planetas ::=            LLAVE_A strPlaneta listPlanetas;
 
 strPlaneta ::=          PR_NOMBRE ASIGNACION COMILLA ID:e COMILLA strPlanetaPrima {: 
                             if(nombrePlanetaRepetido(e)){
-                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value, "Se repitio el valor del nombre asignado"));
+                                errores.add(new ErrorMessage(cur_token.left+1, cur_token.right+1, cur_token.value.toString(), "Se repitio el valor del nombre asignado"));
                             }else{
                                 aggAtributoPlaneta("nombre", e);
                             }

@@ -118,17 +118,18 @@ public class GameUtilities {
         int[] posiciones = Utilities.numerosAleatoriosEntre(modelTablePlanets.getRowCount(), filas*columnas);
         for (int i = 0; i < modelTablePlanets.getRowCount(); i++) {
             Planet planet = new Planet();
-            planet.setName(modelTablePlanets.getValueAt(i, 0).toString());
-            planet.setShips(Integer.parseInt(modelTablePlanets.getValueAt(i, 1).toString()));
-            planet.setProduction(Integer.parseInt(modelTablePlanets.getValueAt(i, 2).toString()));
-            planet.setDeathPercentage(Double.parseDouble(modelTablePlanets.getValueAt(i,3).toString()));
-            planet.setConqueror(modelTablePlanets.getValueAt(i, 4).toString());
-            planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]);
-            planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]);
+            Planet planet2 = new Planet();
+            planet.setName(modelTablePlanets.getValueAt(i, 0).toString()); planet2.setName(planet.getName());
+            planet.setShips(Integer.parseInt(modelTablePlanets.getValueAt(i, 1).toString())); planet2.setShips(planet.getShips());
+            planet.setProduction(Integer.parseInt(modelTablePlanets.getValueAt(i, 2).toString())); planet2.setProduction(planet.getProduction());
+            planet.setDeathPercentage(Double.parseDouble(modelTablePlanets.getValueAt(i,3).toString())); planet2.setDeathPercentage(planet.getDeathPercentage());
+            planet.setConqueror(modelTablePlanets.getValueAt(i, 4).toString()); planet2.setConqueror(planet.getConqueror());
+            planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]); planet2.setPositionX(planet.getPositionX());
+            planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]); planet2.setPositionY(planet.getPositionY());
             if(Utilities.getPlayer(planet, players)!=null)Utilities.getPlayer(planet, players).setNavesCreadas(planet.getShips());
             if(Utilities.getPlayer(planet, players)!=null)Utilities.getPlayer(planet, players).setPlanetasConquistados(Utilities.getPlayer(planet, players).getPlanetasConquistados()+1);
             planets.add(planet);
-            configuration.getPlanets().add(planet);
+            configuration.getPlanets().add(planet2);
         }
     }
 
@@ -137,21 +138,22 @@ public class GameUtilities {
         int[] posiciones = Utilities.numerosAleatoriosEntre(cantidad+players.size(), filas*columnas);
         for (int i = 0; i < (cantidad+players.size()); i++) {
             Planet planet = new Planet();
-            planet.setDeathPercentage(Utilities.porcentajeDeMuerteAleatorio());
-            planet.setProduction((int)((Math.random()*20)+1));
-            planet.setShips((int)((Math.random()*20)+1));
-            planet.setName(nombres.get(i));
+            Planet planet2 = new Planet();
+            planet.setDeathPercentage(Utilities.porcentajeDeMuerteAleatorio()); planet2.setDeathPercentage(planet.getDeathPercentage());
+            planet.setProduction((int)((Math.random()*20)+1)); planet2.setProduction(planet.getProduction());
+            planet.setShips((int)((Math.random()*20)+1)); planet2.setShips(planet.getShips());
+            planet.setName(nombres.get(i)); planet2.setName(planet.getName());
             if(i<players.size()){
-                planet.setConqueror(players.get(i).getName());
+                planet.setConqueror(players.get(i).getName()); planet2.setConqueror(planet.getConqueror());
                 players.get(i).setNavesCreadas(planet.getShips());
                 players.get(i).setPlanetasConquistados(1);
             }else{
                 planet.setConqueror("Nadie");
             }
-            planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]);
-            planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]);
+            planet.setPositionX(posicionXY(posiciones[i], filas, columnas)[0]); planet2.setPositionX(planet.getPositionX());
+            planet.setPositionY(posicionXY(posiciones[i], filas, columnas)[1]); planet2.setPositionY(planet.getPositionY());
             planets.add(planet);
-            configuration.getPlanets().add(planet);
+            configuration.getPlanets().add(planet2);
         }
     }
     

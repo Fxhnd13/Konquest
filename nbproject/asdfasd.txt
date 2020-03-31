@@ -1,0 +1,151 @@
+{
+MAPA : {
+    id : "as",
+    tamano : {
+        filas : 5,
+        columnas : 5
+    },
+    mapaCiego : false,
+    acumular : false,
+    NEUTRALES : {
+        mostrarNaves : true,
+        mostrarEstadisticas : true
+    },
+     finalizacion : 5
+},
+JUGADORES : [
+      {
+          nombre : "a
+      },
+      {
+          nombre : "n
+      }
+],
+PLANETAS : [
+      {
+          nombre : "A",
+          naves : 80,
+          produccion : 20,
+          porcentajeMuertes : 0.8833953904376876,
+          conquistador : "a",
+          posicionX : 1,
+          posicionY : 2
+      },
+      {
+          nombre : "B",
+          naves : 29,
+          produccion : 5,
+          porcentajeMuertes : 0.9560050783977505,
+          conquistador : "n",
+          posicionX : 2,
+          posicionY : 0
+      },
+      {
+          nombre : "C",
+          naves : 55,
+          produccion : 12,
+          porcentajeMuertes : 0.744615980224697,
+          conquistador : "Nadie",
+          posicionX : 3,
+          posicionY : 0
+      },
+      {
+          nombre : "D",
+          naves : 61,
+          produccion : 11,
+          porcentajeMuertes : 0.2579674645851181,
+          conquistador : "Nadie",
+          posicionX : 1,
+          posicionY : 1
+      },
+      {
+          nombre : "E",
+          naves : 29,
+          produccion : 7,
+          porcentajeMuertes : 0.16393412677390765,
+          conquistador : "a",
+          posicionX : 0,
+          posicionY : 2
+      },
+      {
+          nombre : "F",
+          naves : 66,
+          produccion : 14,
+          porcentajeMuertes : 0.4365133437498955,
+          conquistador : "Nadie",
+          posicionX : 2,
+          posicionY : 1
+      },
+      {
+          nombre : "G",
+          naves : 38,
+          produccion : 7,
+          porcentajeMuertes : 0.5520659264420276,
+          conquistador : "Nadie",
+          posicionX : 3,
+          posicionY : 4
+      },
+      {
+          nombre : "H",
+          naves : 23,
+          produccion : 1,
+          porcentajeMuertes : 0.5101351051676821,
+          conquistador : "Nadie",
+          posicionX : 4,
+          posicionY : 0
+      }
+],
+ACCIONES : [
+     {
+          tipo : 1,
+          jugador : "a",
+          turno : 1,
+          turnoSalida : 2,
+          turnoLlegada : 3,
+          naves : 7,
+          planetaSalida : "A",
+          planetaDestino : "E",
+          porcentajeMuertes : 0.8833953904376876
+    },
+     {
+          tipo : 0,
+          jugador : "a",
+          turno : 1
+    },
+     {
+          tipo : 0,
+          jugador : "n",
+          turno : 1
+    },
+     {
+          tipo : 0,
+          jugador : "a",
+          turno : 2
+    },
+     {
+          tipo : 0,
+          jugador : "n",
+          turno : 2
+    },
+     {
+          tipo : 0,
+          jugador : "a",
+          turno : 3
+    },
+     {
+          tipo : 0,
+          jugador : "n",
+          turno : 3
+    },
+     {
+          tipo : 0,
+          jugador : "a",
+          turno : 4
+    },
+     {
+          tipo : 0,
+          jugador : "n",
+          turno : 4
+    }
+]
+}

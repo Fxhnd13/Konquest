@@ -151,7 +151,7 @@ public class UIManager {
         texto+="\nJUGADORES : [";
         for (Player player : gameManager.getConfiguration().getPlayers()) {
             texto+="\n      {";
-            texto+="\n          nombre : \""+player.getName();
+            texto+="\n          nombre : \""+player.getName()+"\"";
             texto+="\n      },";
         }
         texto = texto.substring(0, texto.length()-1);
