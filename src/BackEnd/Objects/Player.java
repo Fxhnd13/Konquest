@@ -114,4 +114,12 @@ public class Player {
             return false;
         }
     }
+    
+    public void aumentarPlanetasConquistados(){
+        this.planetasConquistados++;
+    }
+    
+    public void disminuirPlanetasConquistados(){
+        this.planetasConquistados++;
+    }
 }

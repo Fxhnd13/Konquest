@@ -81,6 +81,7 @@ public class GameManager {
                 case 1: {
                     Planet salida = Utilities.getPlanetaPorNombre(action.getAtack().getNameExitPlanet(), planets);
                     Planet destino = Utilities.getPlanetaPorNombre(action.getAtack().getNameDestinyPlanet(), planets);
+                    salida.setShips(salida.getShips() - action.getAtack().getShips());
                     action.getAtack().setExitTurn(turno);
                     action.getAtack().setTargetTurn(turno + Utilities.turnosParaLlegar(GameUtilities.calcularDistancia(salida, destino)));
                     atacks.getAtaquesActivos().add(action.getAtack());
@@ -182,9 +183,9 @@ public class GameManager {
                 atack.setVictoria(true);
                 destino.setConqueror(salida.getConqueror());
                 destino.setShips(cantidadSobranteDefensor + cantidadSobranteAtacante);
-                Utilities.getPlayer(salida, players).setPlanetasConquistados(Utilities.getPlayer(salida, players).getPlanetasConquistados() + 1);
+                Utilities.getPlayer(salida, players).aumentarPlanetasConquistados();
                 if (!destino.getConqueror().equals("Nadie")) {
-                    Utilities.getPlayer(destino, players).setPlanetasConquistados(Utilities.getPlayer(destino, players).getPlanetasConquistados() - 1);
+                    Utilities.getPlayer(destino, players).disminuirPlanetasConquistados();
                 }
                 bitacora.setText(bitacora.getText() + "\nTurno " + turno + ": El planeta " + destino.getName() + " ha caído ante el conquistador " + salida.getConqueror());
             } else {
@@ -210,7 +211,6 @@ public class GameManager {
                         + "\nLlegará en el turno: " + (1 + turno + Utilities.turnosParaLlegar(GameUtilities.calcularDistancia(exitCell, destinyCell))));
             }
             if (confirmacion == JOptionPane.OK_OPTION) {
-                Utilities.planetAt(exitCell, planets).setShips(Utilities.planetAt(exitCell, planets).getShips() - cantidad);
                 players.get(jugadorEnTurno).setAtaquesRealizados(players.get(jugadorEnTurno).getAtaquesRealizados() + 1);
                 actions.getAccionesARealizar().add(new Action(turno, 1, atack, players.get(jugadorEnTurno).getName()));
                 cancelAtack(label, buton);
